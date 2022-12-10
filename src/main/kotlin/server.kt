@@ -14,6 +14,8 @@ import org.apache.solr.common.SolrDocumentList
 
 data class User(val id: Int, val name: String)
 
+
+
 fun main() {
     val solrClient = HttpSolrClient.Builder("http://localhost:3456/solr/docs").build()
 
@@ -26,17 +28,15 @@ fun main() {
 
         routing {
             get("/") {
-                val sampleUser = User(1, "John")
                 var q = call.request.queryParameters.get("query")?:""
                 var n = call.request.queryParameters.get("n")?:"10"
                 var results = SolrDocumentList()
-                if (q != null) {
+                if (q != "") {
                     val query = SolrQuery()
                     query.setQuery(q)
                     query.setRows(n.toInt())
                     val response = solrClient.query(query)
                     results = response.results
-
                 }
                 call.respond(PebbleContent("index.html", mapOf(
                     "results" to results, "q" to q,

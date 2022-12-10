@@ -10,6 +10,7 @@ import java.nio.file.attribute.FileTime
 import java.util.*
 import kotlinx.coroutines.*
 
+
 fun getSolrClient(): HttpSolrClient {
     val solrUrl = "http://localhost:3456/solr"
     return HttpSolrClient.Builder(solrUrl)

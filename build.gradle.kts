@@ -2,6 +2,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.7.10"
+    id("io.ktor.plugin") version "2.2.1"
+
+}
+
+application {
+    mainClass.set("MainKt")
 }
 
 group = "gr.hcg"
@@ -45,3 +51,4 @@ tasks.test {
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
+
