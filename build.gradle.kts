@@ -7,7 +7,7 @@ plugins {
 }
 
 application {
-    mainClass.set("ServerKt")
+    mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
 group = "gr.hcg"
@@ -40,6 +40,8 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-pebble:$ktor_version")
+
+    implementation("org.mapdb:mapdb:3.0.9")
 
 
 }
