@@ -9,11 +9,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.apache.solr.client.solrj.SolrQuery
 import org.apache.solr.client.solrj.impl.HttpSolrClient
-import org.apache.solr.client.solrj.response.QueryResponse
 import org.apache.solr.common.SolrDocumentList
-
-data class User(val id: Int, val name: String)
-
 
 
 fun main() {
@@ -28,6 +24,8 @@ fun main() {
 
         routing {
             get("/") {
+                call.application.environment.log.info("Hello from /api/v1!")
+
                 var q = call.request.queryParameters.get("query")?:""
                 var n = call.request.queryParameters.get("n")?:"10"
                 var results = SolrDocumentList()

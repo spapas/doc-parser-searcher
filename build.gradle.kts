@@ -7,7 +7,7 @@ plugins {
 }
 
 application {
-    mainClass.set("MainKt")
+    mainClass.set("ServerKt")
 }
 
 group = "gr.hcg"
