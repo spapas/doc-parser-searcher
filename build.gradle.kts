@@ -20,6 +20,7 @@ repositories {
 
 val ktor_version = "2.2.1"
 val tika_version = "2.6.0"
+val lucene_version = "9.4.2"
 
 dependencies {
     testImplementation(kotlin("test"))
@@ -41,6 +42,10 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-pebble:$ktor_version")
 
+    implementation("org.apache.lucene:lucene-core:$lucene_version")
+    implementation("org.apache.lucene:lucene-queryparser:$lucene_version")
+    implementation("org.apache.lucene:lucene-analyzers-common:8.11.2")
+
     implementation("org.mapdb:mapdb:3.0.9")
 
 
@@ -51,6 +56,6 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 

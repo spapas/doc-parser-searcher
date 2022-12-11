@@ -1,6 +1,7 @@
 package gr.serafeim
 
 import com.mitchellbosecke.pebble.loader.ClasspathLoader
+import gr.serafeim.parser.init
 import io.ktor.server.application.*
 import io.ktor.server.pebble.*
 
@@ -17,8 +18,9 @@ fun Application.module() {
     val solrClient = HttpSolrClient.Builder("http://localhost:3456/solr/docs").build()
     val env = environment.config.propertyOrNull("ktor.environment")?.getString()
     val logger = LoggerFactory.getLogger(Application::class.java)
-
-    println(env)
+    val directory = environment.config.propertyOrNull("parser.directory")?.getString()?:"."
+    val interval = environment.config.propertyOrNull("parser.interval")?.getString()?.toInt()?:60
+    gr.serafeim.parser.init(directory, interval)
 
     install(Pebble){
         loader(ClasspathLoader().apply {
