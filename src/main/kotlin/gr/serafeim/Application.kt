@@ -10,6 +10,7 @@ import org.apache.lucene.analysis.el.GreekAnalyzer
 import org.apache.lucene.document.DateTools
 import org.apache.lucene.document.Document
 import org.apache.lucene.document.IntPoint
+import org.apache.lucene.document.LongPoint
 import org.apache.lucene.index.DirectoryReader
 import org.apache.lucene.index.Term
 import org.apache.lucene.queryparser.classic.QueryParser
@@ -48,6 +49,9 @@ fun search(q: String, n: Int): List<Result> {
     val query2: Query = WildcardQuery(Term("name", q))
     bqb.add(query2, BooleanClause.Occur.SHOULD)
 
+    val query3: Query = LongPoint.newRangeQuery("created_point", 0, 9999999999999)
+    bqb.add(query3, BooleanClause.Occur.FILTER)
+    // also created:[20221202 TO 20221203]
     //IntPoint.newRangeQuery()
 
     val booleanQuery = bqb.build()
