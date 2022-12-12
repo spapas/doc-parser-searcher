@@ -21,11 +21,13 @@
 
     {% for r in results %}
         <li>
-
             Όνομα: {{ r.name }}<br />
             Path: {{ r.id }}<br />
-            Ημ. δημ: {{ r["created-date"] }}<br />
-            Περιεχόμενο: {{ r["_text_"].substring(100) }}<br />
+            Created / modified / Accessed: {{ r.created }} / {{ r.modified }} / {{ r.accessed }}
+            Περιεχόμενο: {{ r.abstract() }}<br />
+            <small>
+                Περιεχόμενο: {{ r.text }}<br />
+            </small>
         </li>
     {% endfor %}
 </body>

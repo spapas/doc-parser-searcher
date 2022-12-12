@@ -26,6 +26,8 @@ fun toDate(ft: FileTime): Date {
     return Date(ft.toMillis())
 }
 
+
+
 fun main() {
     val client = getSolrClient()
     val start = System.currentTimeMillis()
