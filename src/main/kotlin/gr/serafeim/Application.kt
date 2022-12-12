@@ -9,14 +9,14 @@ import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.el.GreekAnalyzer
 import org.apache.lucene.document.DateTools
 import org.apache.lucene.document.Document
+import org.apache.lucene.document.IntPoint
 import org.apache.lucene.index.DirectoryReader
+import org.apache.lucene.index.Term
 import org.apache.lucene.queryparser.classic.QueryParser
-import org.apache.lucene.search.IndexSearcher
+import org.apache.lucene.queryparser.xml.builders.RangeQueryBuilder
+import org.apache.lucene.search.*
 import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
-import org.apache.solr.client.solrj.SolrQuery
-import org.apache.solr.client.solrj.impl.HttpSolrClient
-import org.apache.solr.common.SolrDocumentList
 import org.slf4j.LoggerFactory
 import java.nio.file.Paths
 import java.util.*
@@ -39,9 +39,20 @@ fun search(q: String, n: Int): List<Result> {
     val reader = DirectoryReader.open(directory)
     val indexSearcher = IndexSearcher(reader)
     val analyzer: Analyzer = GreekAnalyzer()
-    val query = QueryParser("text", analyzer).parse(q)
+    val query1 = QueryParser("text", analyzer).parse(q)
 
-    val results = indexSearcher.search(query, n)
+    // https://stackoverflow.com/questions/2005084/how-to-specify-two-fields-in-lucene-queryparser
+
+    val bqb = BooleanQuery.Builder()
+    bqb.add(query1, BooleanClause.Occur.SHOULD)
+    val query2: Query = WildcardQuery(Term("name", q))
+    bqb.add(query2, BooleanClause.Occur.SHOULD)
+
+    //IntPoint.newRangeQuery()
+
+    val booleanQuery = bqb.build()
+
+    val results = indexSearcher.search(booleanQuery, n)
 
     return results.scoreDocs.map {
 
@@ -50,6 +61,7 @@ fun search(q: String, n: Int): List<Result> {
         val path = doc.getValues("path").asList()
         val name = doc.get("name")
         val text = doc.get("text")
+
         val created = fromDateString(doc.get("created"))
         val accessed = fromDateString(doc.get("accessed"))
         val modified = fromDateString(doc.get("modified"))

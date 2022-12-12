@@ -13,6 +13,7 @@ import org.apache.lucene.index.Term
 import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
 import org.apache.tika.Tika
+import org.apache.tika.config.TikaConfig
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.file.Files
@@ -51,7 +52,8 @@ fun parse() {
     val indexWriterConfig = IndexWriterConfig(analyzer)
     val indexWriter = IndexWriter(directory, indexWriterConfig)
 
-    val tika = Tika()
+    var config = TikaConfig(object {}.javaClass.getResourceAsStream("/tika-config.xml"))
+    val tika = Tika(config)
     val dir = File("c:/users/serafeim/desktop")
     runBlocking {
         val jobs = mutableListOf<Job>()
@@ -78,6 +80,10 @@ fun parse() {
                     doc.add(StringField("created", toDateString(attrs.creationTime()), Field.Store.YES))
                     doc.add(StringField("accessed", toDateString(attrs.lastAccessTime()), Field.Store.YES))
                     doc.add(StringField("modified", toDateString(attrs.lastModifiedTime()), Field.Store.YES))
+
+                    doc.add(LongPoint("created_point", attrs.creationTime().toMillis()))
+                    doc.add(LongPoint("accessed_point", attrs.creationTime().toMillis()))
+                    doc.add(LongPoint("modified_point", attrs.creationTime().toMillis()))
 
                     //doc.addField("created-date", toDate(attrs.creationTime()))
                     //doc.addField("last-accessed-date", toDate(attrs.lastAccessTime()))

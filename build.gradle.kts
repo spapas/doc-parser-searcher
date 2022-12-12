@@ -28,8 +28,6 @@ dependencies {
     implementation("org.apache.tika:tika-parsers:$tika_version")
     implementation("org.apache.tika:tika-parsers-standard-package:$tika_version")
 
-    implementation("org.apache.solr:solr-solrj:8.11.1")
-
     implementation("org.apache.logging.log4j:log4j-core:2.19.0")
     implementation("org.slf4j:slf4j-api:2.0.5")
     implementation("org.slf4j:slf4j-simple:2.0.5")
