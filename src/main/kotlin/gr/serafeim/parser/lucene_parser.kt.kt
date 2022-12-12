@@ -32,7 +32,7 @@ fun init(directory: String, interval: Int) {
     Timer("Parser").schedule(
         0, TimeUnit.MINUTES.toMillis(interval.toLong())) {
         println("Parse START init....")
-        parse()
+        parse(directory)
     }
 }
 
@@ -42,7 +42,7 @@ fun toDateString(ft: FileTime): String {
 
 
 
-fun parse() {
+fun parse(dir: String) {
     println("Parse START")
     //We open a File System directory as we want to store the index on our local file system.
     val directory: Directory = FSDirectory.open(Paths.get("lucene_index"))
@@ -50,11 +50,15 @@ fun parse() {
     //The analyzer is used to perform analysis on text of documents and create the terms that will be added in the index.
     val analyzer: Analyzer = GreekAnalyzer()
     val indexWriterConfig = IndexWriterConfig(analyzer)
+    // NOTE: IndexWriter instances are completely thread safe, meaning multiple threads can call any of its methods, concurrently. If your application requires external synchronization, you should not synchronize on the IndexWriter instance as this may cause deadlock; use your own (non-Lucene) objects instead.
     val indexWriter = IndexWriter(directory, indexWriterConfig)
 
     var config = TikaConfig(object {}.javaClass.getResourceAsStream("/tika-config.xml"))
     val tika = Tika(config)
-    val dir = File("c:/users/serafeim/desktop")
+    // Allow tikato read unlimited characters
+    tika.maxStringLength = -1
+    println("Will read up to ${tika.maxStringLength} length")
+    val dir = File(dir)
     runBlocking {
         val jobs = mutableListOf<Job>()
 
@@ -63,10 +67,8 @@ fun parse() {
                 val job = GlobalScope.launch {
                     println(it.name)
                     val attrs = Files.readAttributes<BasicFileAttributes>(Paths.get(it.path), BasicFileAttributes::class.java)
-
                     val content = tika.parseToString(it.absoluteFile)
 
-                    //val doc = SolrInputDocument()
                     val doc = Document()
 
                     doc.add(StringField("id", it.path, Field.Store.YES))
@@ -96,6 +98,5 @@ fun parse() {
     //client.commit("docs")
 
     println("Docs Indexed Successfully!")
-
     indexWriter.close()
 }

@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="87922cd0-d5d7-4701-ac16-55524a796988" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/Application.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/parser/lucene_parser.kt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/parser/lucene_parser.kt.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.conf" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.conf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +95,7 @@
       <workItem from="1670657936110" duration="476000" />
       <workItem from="1670782305376" duration="9816000" />
       <workItem from="1670847581623" duration="8539000" />
-      <workItem from="1670875212045" duration="4903000" />
+      <workItem from="1670875212045" duration="5635000" />
     </task>
     <servers />
   </component>
