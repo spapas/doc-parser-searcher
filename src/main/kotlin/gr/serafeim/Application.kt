@@ -20,6 +20,7 @@ import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
 import org.slf4j.LoggerFactory
 import java.nio.file.Paths
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -27,36 +28,59 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 data class Result(val id: String, val text: String, val name: String, val path: List<String>, val created: Date, val modified: Date, val accessed: Date) {
     fun abstract(): String {
-        return text.substring(100)
+        val m = minOf(50, text.length-1)
+        return text.substring(0, m)
     }
 }
+
+data class SearchParams(val q: String, val n: Int, val path: String?, val createdFrom: Date?, val createdTo: Date?)
 
 fun fromDateString(s: String): Date {
     return DateTools.stringToDate(s)
 }
 
-fun search(q: String, n: Int): List<Result> {
+fun search(sp: SearchParams): List<Result> {
     val directory: Directory = FSDirectory.open(Paths.get("lucene_index"))
     val reader = DirectoryReader.open(directory)
     val indexSearcher = IndexSearcher(reader)
     val analyzer: Analyzer = GreekAnalyzer()
-    val query1 = QueryParser("text", analyzer).parse(q)
+    val query1 = QueryParser("text", analyzer).parse(sp.q)
 
     // https://stackoverflow.com/questions/2005084/how-to-specify-two-fields-in-lucene-queryparser
 
     val bqb = BooleanQuery.Builder()
     bqb.add(query1, BooleanClause.Occur.SHOULD)
-    val query2: Query = WildcardQuery(Term("name", q))
+    val query2: Query = WildcardQuery(Term("name", sp.q))
     bqb.add(query2, BooleanClause.Occur.SHOULD)
+    bqb.setMinimumNumberShouldMatch(1)
 
-    val query3: Query = LongPoint.newRangeQuery("created_point", 0, 9999999999999)
-    bqb.add(query3, BooleanClause.Occur.FILTER)
+    if (sp.createdTo != null || sp.createdFrom!=null) {
+        val createdFromMillis = if (sp.createdFrom!=null) {
+            sp.createdFrom.time
+        } else {
+            0
+        }
+
+        val createdToMillis = if (sp.createdTo!=null) {
+            sp.createdTo.time
+        } else {
+            Long.MAX_VALUE
+        }
+        val query3: Query = LongPoint.newRangeQuery("created_point", createdFromMillis, createdToMillis)
+        bqb.add(query3, BooleanClause.Occur.FILTER)
+    }
+
+
+    if (sp.path!=null && sp.path!="") {
+        val query4: Query = WildcardQuery(Term("path", sp.path))
+        bqb.add(query4, BooleanClause.Occur.FILTER)
+    }
     // also created:[20221202 TO 20221203]
     //IntPoint.newRangeQuery()
 
     val booleanQuery = bqb.build()
 
-    val results = indexSearcher.search(booleanQuery, n)
+    val results = indexSearcher.search(booleanQuery, sp.n)
 
     return results.scoreDocs.map {
 
@@ -71,8 +95,11 @@ fun search(q: String, n: Int): List<Result> {
         val modified = fromDateString(doc.get("modified"))
         Result(id = id, text = text, name = name, path = path, accessed = accessed, modified = modified, created = created)
     }
+}
 
-
+fun toDate(s: String): Date {
+    val formatter = SimpleDateFormat("yyyy-MM-dd")
+    return formatter.parse(s)
 }
 
 fun Application.module() {
@@ -93,15 +120,36 @@ fun Application.module() {
         get("/") {
             call.application.environment.log.info("Hello /")
             logger.info("Hi hi")
-            var q = call.request.queryParameters.get("query")?:""
-            var n = call.request.queryParameters.get("n")?:"10"
+            val q = call.request.queryParameters.get("query")?:""
+            val n = call.request.queryParameters.get("number")?:"10"
+            val path = call.request.queryParameters.get("path")?:""
+            val created_from = call.request.queryParameters.get("created-from")?:""
+
+            val created_to = call.request.queryParameters.get("created-to")?:""
+            println(created_from)
             var results = listOf<Result>()
             if (q != "") {
-                results = search(q, n.toInt())
+                val createdTo = if(created_to!=null && created_to!="") {
+                    toDate(created_to)
+                } else {
+                    null
+                }
+                val createdFrom = if(created_from!=null && created_from!="") {
+                    toDate(created_from)
+                } else {
+                    null
+                }
+
+                val sp = SearchParams(q=q, n=n.toInt(), path=path, createdFrom = createdFrom, createdTo = createdTo)
+                results = search(sp)
             }
             call.respond(PebbleContent("index.html", mapOf(
-                "results" to results, "q" to q,
-                "n" to n
+                "results" to results,
+                "q" to q,
+                "n" to n,
+                "created_from" to created_from,
+                "created_to" to created_to,
+                "path" to path
             )))
         }
     }

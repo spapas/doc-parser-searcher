@@ -82,16 +82,9 @@ fun parse() {
                     doc.add(StringField("modified", toDateString(attrs.lastModifiedTime()), Field.Store.YES))
 
                     doc.add(LongPoint("created_point", attrs.creationTime().toMillis()))
-                    doc.add(LongPoint("accessed_point", attrs.creationTime().toMillis()))
-                    doc.add(LongPoint("modified_point", attrs.creationTime().toMillis()))
+                    doc.add(LongPoint("accessed_point", attrs.lastAccessTime().toMillis()))
+                    doc.add(LongPoint("modified_point", attrs.lastModifiedTime().toMillis()))
 
-                    //doc.addField("created-date", toDate(attrs.creationTime()))
-                    //doc.addField("last-accessed-date", toDate(attrs.lastAccessTime()))
-                    //doc.addField("last-modified-date", toDate(attrs.lastModifiedTime()))
-                    //println(doc)
-                    //val updateResponse: UpdateResponse = client.add("docs", doc)
-                    //println(updateResponse)
-                    //indexWriter.addDocument(doc)
                     val idTerm = Term("id", it.path)
                     indexWriter.updateDocument(idTerm, doc)
                 }
