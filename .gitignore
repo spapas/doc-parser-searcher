@@ -42,3 +42,4 @@ bin/
 .DS_Store
 
 lucene_index/*
+map.db
