@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Keys</h1>
+    Size: {{ keySize }}
+    <br />
+    <ul>
+        {% for k in keys %}
+            <li>{{ k }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/" class="btn btn-info">Back</a>
+{% endblock %}}

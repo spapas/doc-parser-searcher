@@ -9,15 +9,19 @@ import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.el.GreekAnalyzer
 import org.apache.lucene.document.DateTools
 import org.apache.lucene.document.Document
-import org.apache.lucene.document.IntPoint
 import org.apache.lucene.document.LongPoint
 import org.apache.lucene.index.DirectoryReader
 import org.apache.lucene.index.Term
 import org.apache.lucene.queryparser.classic.QueryParser
-import org.apache.lucene.queryparser.xml.builders.RangeQueryBuilder
 import org.apache.lucene.search.*
+import org.apache.lucene.search.highlight.Highlighter
+import org.apache.lucene.search.highlight.QueryScorer
+import org.apache.lucene.search.highlight.SimpleHTMLFormatter
+import org.apache.lucene.search.highlight.SimpleSpanFragmenter
 import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
+import org.mapdb.DBMaker
+import org.mapdb.Serializer
 import org.slf4j.LoggerFactory
 import java.nio.file.Paths
 import java.text.SimpleDateFormat
@@ -79,10 +83,21 @@ fun search(sp: SearchParams): List<Result> {
     //IntPoint.newRangeQuery()
 
     val booleanQuery = bqb.build()
+    val collector = TopScoreDocCollector.create(99999, 100)
 
-    val results = indexSearcher.search(booleanQuery, sp.n)
+    indexSearcher.search(booleanQuery, collector)
+    val start = 0
+    val howmany = sp.n
 
-    return results.scoreDocs.map {
+    // Highlight
+    val formatter = SimpleHTMLFormatter("<span class='highlight'>", "</span>");
+    val queryScorer =  QueryScorer(booleanQuery);
+    val highlighter = Highlighter(formatter, queryScorer);
+    highlighter.textFragmenter = SimpleSpanFragmenter(queryScorer, Int.MAX_VALUE)
+    highlighter.maxDocCharsToAnalyze = Int.MAX_VALUE
+
+
+    return collector.topDocs(start, howmany).scoreDocs.map {
 
         val doc: Document = indexSearcher.doc(it.doc)
         val id = doc.get("id")
@@ -93,7 +108,9 @@ fun search(sp: SearchParams): List<Result> {
         val created = fromDateString(doc.get("created"))
         val accessed = fromDateString(doc.get("accessed"))
         val modified = fromDateString(doc.get("modified"))
-        Result(id = id, text = text, name = name, path = path, accessed = accessed, modified = modified, created = created)
+
+        val htext = highlighter.getBestFragment(analyzer, "text", text);
+        Result(id = id, text = htext, name = name, path = path, accessed = accessed, modified = modified, created = created)
     }
 }
 
@@ -117,14 +134,26 @@ fun Application.module() {
     }
 
     routing {
+        get("/keys") {
+            logger.info("Hi from /keys")
+            val db = DBMaker.fileDB("map.db").readOnly().make()
+            val map = db.hashMap("docs", Serializer.STRING, Serializer.LONG).createOrOpen()
+
+            call.respond(PebbleContent("keys.html", mapOf(
+                "keys" to map.keys,
+                "keySize" to map.keys.size,
+
+            )))
+            map.close()
+            db.close()
+        }
         get("/") {
-            call.application.environment.log.info("Hello /")
-            logger.info("Hi hi")
+
+            logger.info("Hi from /")
             val q = call.request.queryParameters.get("query")?:""
             val n = call.request.queryParameters.get("number")?:"10"
             val path = call.request.queryParameters.get("path")?:""
             val created_from = call.request.queryParameters.get("created-from")?:""
-
             val created_to = call.request.queryParameters.get("created-to")?:""
             println(created_from)
             var results = listOf<Result>()
@@ -143,7 +172,7 @@ fun Application.module() {
                 val sp = SearchParams(q=q, n=n.toInt(), path=path, createdFrom = createdFrom, createdTo = createdTo)
                 results = search(sp)
             }
-            call.respond(PebbleContent("index.html", mapOf(
+            call.respond(PebbleContent("home.html", mapOf(
                 "results" to results,
                 "q" to q,
                 "n" to n,
@@ -154,37 +183,3 @@ fun Application.module() {
         }
     }
 }
-/*
-fun main() {
-    val solrClient = HttpSolrClient.Builder("http://localhost:3456/solr/docs").build()
-
-    embeddedServer(Netty, port = 8000, watchPaths = listOf("classes", "resources")) {
-        install(Pebble) {
-            loader(ClasspathLoader().apply {
-                prefix = "templates"
-            })
-        }
-
-        routing {
-            get("/") {
-                call.application.environment.log.info("Hello from /api/v1!")
-
-                var q = call.request.queryParameters.get("query")?:""
-                var n = call.request.queryParameters.get("n")?:"10"
-                var results = SolrDocumentList()
-                if (q != "") {
-                    val query = SolrQuery()
-                    query.setQuery(q)
-                    query.setRows(n.toInt())
-                    val response = solrClient.query(query)
-                    results = response.results
-                }
-                call.respond(PebbleContent("index.html", mapOf(
-                    "results" to results, "q" to q,
-                    "n" to n
-                )))
-            }
-        }
-    }.start(wait = true)
-}
-*/

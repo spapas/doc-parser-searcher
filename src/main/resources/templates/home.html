@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block extra_style %}
+    <style>
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <h1>Doc search</h1>
+    <form method="GET" action="" class="">
+        <div class="row row-cols-lg-auto g-3 align-items-center">
+            <div class="col-12">
+                <label class="" for="query">Search for</label>
+                <input id='query' class="form-control form-control-sm" value="{{q}}" type="text" name="query" placeholder="">
+            </div>
+            <div class="col-12">
+                <label class="" for="number">Result count</label>
+                <input id="number" class="form-control form-control-sm" value="{{n}}" type="number" name="number" placeholder="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="accordion " id="accordionExample">
+                    <div class="accordion-item " >
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Extra choices
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="row row-cols-lg-auto g-3 align-items-center">
+                                    <div class="col-12">
+                                        <label class="" for="path">Folder name</label>
+                                        <input id='path' class="form-control form-control-sm" value="{{path}}" type="text" name="path" placeholder="">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="" for="created-from">Created date from</label>
+                                        <input id='created-from' class="form-control form-control-sm" value="{{created_from}}" type="date" name="created-from" placeholder="">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="" for="created-to">Created date to</label>
+                                        <input id="created-to" class="form-control form-control-sm" value="{{created_to}}" type="date" name="created-to" placeholder="">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="" for="modified-from">Modified date from</label>
+                                        <input id='modified-from' class="form-control form-control-sm" value="{{modified_from}}" type="date" name="modified-from" placeholder="">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="" for="modified-to">Modified date to</label>
+                                        <input id="modified-to" class="form-control form-control-sm" value="{{modified_from}}" type="date" name="modified-to" placeholder="">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="" for="accessed-from">Access date from</label>
+                                        <input id='accessed-from' class="form-control form-control-sm" value="{{accessed_from}}" type="date" name="accessed-from" placeholder="">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="" for="accessed-from">Access date to</label>
+                                        <input id="accessed-to" class="form-control form-control-sm" value="{{accessed_to}}" type="date" name="accessed-from" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Αναζήτηση">
+    </form>
+
+    {% for r in results %}
+        <li>
+            Name: {{ r.name }}<br />
+            Path: {{ r.id }}<br />
+            Created / modified / Accessed: {{ r.created }} / {{ r.modified }} / {{ r.accessed }}
+            Content abstract: {{ r.abstract()|raw }}<br />
+            <small>
+                Content: {{ r.text|raw }}<br />
+            </small>
+        </li>
+    {% endfor %}
+{% endblock %}

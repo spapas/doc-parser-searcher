@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="">
+    <title>Doc search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+
+    </style>
+    {% block extra_style %}{% endblock %}
+</head>
+<body >
+<div class="container">
+    {% block content %}
+    <h1>Αναζήτηση σε έγγραφα!</h1>
+    <form method="GET" action="" class="">
+        <div class="row row-cols-lg-auto g-3 align-items-center">
+            <div class="col-12">
+                <label class="" for="query">Αναζήτηση για</label>
+                <input id='query' class="form-control form-control-sm" value="{{q}}" type="text" name="query" placeholder="">
+            </div>
+            <div class="col-12">
+                <label class="" for="number">Αρ. αποτελεσμάτων</label>
+                <input id="number" class="form-control form-control-sm" value="{{n}}" type="number" name="number" placeholder="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="accordion " id="accordionExample">
+                    <div class="accordion-item " >
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Επιπλέον επιλογές
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="row row-cols-lg-auto g-3 align-items-center">
+                                    <div class="col-12">
+                                        <label class="" for="path">Όνομα φακέλου</label>
+                                        <input id='path' class="form-control form-control-sm" value="{{path}}" type="text" name="path" placeholder="">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="" for="created-from">Ημ. δημιουργίας από</label>
+                                        <input id='created-from' class="form-control form-control-sm" value="{{created_from}}" type="date" name="created-from" placeholder="">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="" for="created-to">Ημ. δημιουργίας έως</label>
+                                        <input id="created-to" class="form-control form-control-sm" value="{{created_to}}" type="date" name="created-to" placeholder="">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="" for="modified-from">Ημ. τροποποίησης από</label>
+                                        <input id='modified-from' class="form-control form-control-sm" value="{{modified_from}}" type="date" name="modified-from" placeholder="">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="" for="modified-to">Ημ. τροποποίησης από</label>
+                                        <input id="modified-to" class="form-control form-control-sm" value="{{modified_from}}" type="date" name="modified-to" placeholder="">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="" for="accessed-from">Ημ. προσπέλασης από</label>
+                                        <input id='accessed-from' class="form-control form-control-sm" value="{{accessed_from}}" type="date" name="accessed-from" placeholder="">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="" for="accessed-from">Ημ. προσπέλασης από</label>
+                                        <input id="accessed-to" class="form-control form-control-sm" value="{{accessed_to}}" type="date" name="accessed-from" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Αναζήτηση">
+    </form>
+
+    {% for r in results %}
+        <li>
+            Όνομα: {{ r.name }}<br />
+            Path: {{ r.id }}<br />
+            Created / modified / Accessed: {{ r.created }} / {{ r.modified }} / {{ r.accessed }}
+            Περιεχόμενο: {{ r.abstract() }}<br />
+            <small>
+                Περιεχόμενο: {{ r.text }}<br />
+            </small>
+        </li>
+    {% endfor %}
+{% endblock %}
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    {% block extra_script %}{% endblock %}
+</body>
+
+</html>
