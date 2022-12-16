@@ -66,8 +66,38 @@
                 </div>
             </div>
         </div>
-        <input type="submit" class="btn btn-primary" value="Αναζήτηση">
+        <input type="submit" class="btn btn-primary" value="Search">
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#helpModal">
+            How to search
+        </button>
     </form>
+
+
+<!-- Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="helpModalLabel">How to search</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Simple: Enter a word and it will search for it using stemming rules for the configured language(i.e if you search for "apple" it will also return documents containing "apples")</li>
+                    <li>Phrase: If you want to search for an exact phrase, f.e "hello, world" you need to enter it between quotes. If you enter two words without the quotes it will search for documents containing one of these words. So searching for hello, world (without quotes) will return documents containing hello and documents containing word (see boolean search for more explanation)</li>
+                    <li>Wildcard: You can do wildcard search: Searching for app* will return documents containing apple, applying or application. Use ? for a single letter, * for any number of characters and + for at least one character. The wildcard character cannot be on the start of your query, i.e *ppl will not work.</li>
+                    <li>Boolean</li>
+                    <li>Distance</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
     {% for r in results %}
         <li>

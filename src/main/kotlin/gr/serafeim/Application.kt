@@ -24,6 +24,7 @@ import org.mapdb.DBMaker
 import org.mapdb.Serializer
 import org.slf4j.LoggerFactory
 import java.nio.file.Paths
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,6 +49,7 @@ fun search(sp: SearchParams): List<Result> {
     val reader = DirectoryReader.open(directory)
     val indexSearcher = IndexSearcher(reader)
     val analyzer: Analyzer = GreekAnalyzer()
+
     val query1 = QueryParser("text", analyzer).parse(sp.q)
 
     // https://stackoverflow.com/questions/2005084/how-to-specify-two-fields-in-lucene-queryparser
@@ -170,7 +172,11 @@ fun Application.module() {
                 }
 
                 val sp = SearchParams(q=q, n=n.toInt(), path=path, createdFrom = createdFrom, createdTo = createdTo)
-                results = search(sp)
+                try {
+                    results = search(sp)
+                } catch (e: org.apache.lucene.queryparser.classic.ParseException) {
+                    logger.info("Error while trying to parse the query")
+                }
             }
             call.respond(PebbleContent("home.html", mapOf(
                 "results" to results,
