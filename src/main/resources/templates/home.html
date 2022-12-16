@@ -4,6 +4,16 @@
         .highlight {
             background-color: yellow;
         }
+
+        .result {
+            border-bottom: 2pt solid royalblue;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .accordion-button {
+            padding: .5rem;
+        }
     </style>
 {% endblock %}
 {% block content %}
@@ -21,14 +31,14 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="accordion " id="accordionExample">
+                <div class="accordion " id="accordionForm">
                     <div class="accordion-item " >
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                 Extra choices
                             </button>
                         </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionForm">
                             <div class="accordion-body">
                                 <div class="row row-cols-lg-auto g-3 align-items-center">
                                     <div class="col-12">
@@ -100,16 +110,51 @@
         </div>
     </div>
 </div>
+Showing {{ n }} from {{ total }} results
 
+<nav aria-label="Pagination">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="{{ prev_page }}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">{{ page }}</a></li>
+        <li class="page-item"><a class="page-link" href="{{ next_page }}">Next</a></li>
+    </ul>
+</nav>
+<h3>Results</h3>
+    <ul>
     {% for r in results %}
-        <li>
-            Name: {{ r.name }}<br />
-            Path: {{ r.id }}<br />
-            Created / modified / Accessed: {{ r.created }} / {{ r.modified }} / {{ r.accessed }}
-            Content abstract: {{ r.abstract()|raw }}<br />
-            <small>
-                Content: {{ r.text|raw }}<br />
+        <li class="result">
+            <h4 class="header">{{ r.name }}</h4>
+
+            <a href='/download?path={{ r.id|escape(strategy="url_param")  }}'>{{ r.id }}</a><br />
+            Created / modified / Accessed: {{ r.created }} / {{ r.modified }} / {{ r.accessed }}<br />
+
+            <h5>Matches</h5>
+            <ul>
+                {% for f in r.hfragments %}
+                    <li>{{ f|raw }}</li>
+                {% endfor %}
+            </ul>
+
+            <small >
+                <div class="accordion " id='accordion-content-{{ loop.index }}'>
+                    <div class="accordion-item " >
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target='#collapse-{{ loop.index }}' aria-expanded="true" aria-controls="collapse-{{ loop.index }}">
+                                Show text
+                            </button>
+                        </h2>
+                        <div id='collapse-{{ loop.index }}' class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent='#accordion-content-{{ loop.index }}'>
+                            <div class="accordion-body">
+                                {{ r.text|raw }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </small>
         </li>
+
+    {% else %}
+        <li>Nothing found!</li>
     {% endfor %}
+    </ul>
 {% endblock %}

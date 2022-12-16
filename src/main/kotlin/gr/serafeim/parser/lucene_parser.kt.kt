@@ -1,5 +1,6 @@
 package gr.serafeim.parser
 
+import gr.serafeim.DBHolder
 import kotlinx.coroutines.*
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.el.GreekAnalyzer
@@ -11,6 +12,7 @@ import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
 import org.apache.tika.Tika
 import org.apache.tika.config.TikaConfig
+import org.apache.tika.exception.ZeroByteFileException
 import org.mapdb.DBMaker.fileDB
 import org.mapdb.HTreeMap
 import org.mapdb.Serializer
@@ -70,28 +72,34 @@ fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<
     logger.debug("Existing mod time is ${existingModTime} and current mod time is ${modified}")
     if(existingModTime==null || existingModTime < modified) {
         logger.debug("Need to parse and index ${it.name}")
-        map.put(it.path, modified)
-        val content = tika.parseToString(it.absoluteFile)
-        val doc = Document()
 
-        doc.add(StringField("id", it.path, Field.Store.YES))
-        doc.add(TextField("text", content, Field.Store.YES))
-        doc.add(StringField("name", it.name, Field.Store.YES))
-        it.path.split(File.separator).forEach {
-            doc.add(StringField("path", it, Field.Store.YES))
+        try {
+            val content = tika.parseToString(it.absoluteFile)
+            map.put(it.path, modified)
+            val doc = Document()
+
+            doc.add(StringField("id", it.path, Field.Store.YES))
+            doc.add(TextField("text", content, Field.Store.YES))
+            doc.add(StringField("name", it.name, Field.Store.YES))
+            doc.add(TextField("name_t", it.name, Field.Store.NO))
+            it.path.split(File.separator).forEach {
+                doc.add(StringField("path", it, Field.Store.YES))
+            }
+            doc.add(StringField("extension", it.name, Field.Store.YES))
+
+            doc.add(StringField("created", toDateString(attrs.creationTime()), Field.Store.YES))
+            doc.add(StringField("accessed", toDateString(attrs.lastAccessTime()), Field.Store.YES))
+            doc.add(StringField("modified", toDateString(attrs.lastModifiedTime()), Field.Store.YES))
+
+            doc.add(LongPoint("created_point", attrs.creationTime().toMillis()))
+            doc.add(LongPoint("accessed_point", attrs.lastAccessTime().toMillis()))
+            doc.add(LongPoint("modified_point", attrs.lastModifiedTime().toMillis()))
+
+            val idTerm = Term("id", it.path)
+            indexWriter.updateDocument(idTerm, doc)
+        } catch (e: ZeroByteFileException) {
+            logger.info("File ${it.path} has 0 length, skipping")
         }
-        doc.add(StringField("extension", it.name, Field.Store.YES))
-
-        doc.add(StringField("created", toDateString(attrs.creationTime()), Field.Store.YES))
-        doc.add(StringField("accessed", toDateString(attrs.lastAccessTime()), Field.Store.YES))
-        doc.add(StringField("modified", toDateString(attrs.lastModifiedTime()), Field.Store.YES))
-
-        doc.add(LongPoint("created_point", attrs.creationTime().toMillis()))
-        doc.add(LongPoint("accessed_point", attrs.lastAccessTime().toMillis()))
-        doc.add(LongPoint("modified_point", attrs.lastModifiedTime().toMillis()))
-
-        val idTerm = Term("id", it.path)
-        indexWriter.updateDocument(idTerm, doc)
     } else {
         logger.debug("Skipping the file")
     }
@@ -99,9 +107,6 @@ fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<
 
 fun parse(dir: String) {
     logger.info("Parse START")
-
-    val db = fileDB("map.db").make()
-    val map = db.hashMap("docs", Serializer.STRING, Serializer.LONG).createOrOpen()
 
     val tika = configureTika()
     val indexWriter = configureIndexWriter(dir)
@@ -113,10 +118,10 @@ fun parse(dir: String) {
         val jobs = mutableListOf<Job>()
 
         dir.walk(direction = FileWalkDirection.TOP_DOWN).forEach {
-            if (listOf("doc", "docx").contains(it.extension.lowercase())) {
+            if (listOf("doc", "docx", "xls", "xlsx", "ppt", "pptx", "odt", "fodt", "ods", "fods", "odp", "fodp", "txt", "html", "md", "rtf").contains(it.extension.lowercase())) {
                 uniquePaths.add(it.path)
                 val job = GlobalScope.launch {
-                    parseDocument(it, indexWriter, tika, map)
+                    parseDocument(it, indexWriter, tika, DBHolder.map)
                 }
                 jobs.add(job)
             }
@@ -124,10 +129,9 @@ fun parse(dir: String) {
         jobs.joinAll()
     }
 
-    clearDeleted(map, uniquePaths, indexWriter)
+    clearDeleted(DBHolder.map, uniquePaths, indexWriter)
 
-    db.commit()
-    db.close()
+    DBHolder.db.commit()
 
     println("Docs Indexed Successfully!")
     indexWriter.close()
