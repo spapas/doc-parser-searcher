@@ -49,8 +49,6 @@ dependencies {
     //implementation("org.apache.lucene:lucene-analyzers-common:$lucene_version")
 
     implementation("org.mapdb:mapdb:3.0.9")
-
-
 }
 
 tasks.test {
@@ -59,13 +57,4 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "14"
-}
-
-task("koko") {
-    project.logger.lifecycle("my message visible by default")
-
-}
-
-tasks.named("buildFatJar") {
-    finalizedBy("koko")
 }

@@ -15,9 +15,7 @@ import org.apache.lucene.store.FSDirectory
 import org.apache.tika.Tika
 import org.apache.tika.config.TikaConfig
 import org.apache.tika.exception.ZeroByteFileException
-import org.mapdb.DBMaker.fileDB
 import org.mapdb.HTreeMap
-import org.mapdb.Serializer
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.nio.file.Files
@@ -29,12 +27,6 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.schedule
 import org.apache.lucene.codecs.PostingsFormat
-import org.apache.lucene.codecs.lucene90.Lucene90PostingsFormat
-import org.apache.lucene.util.NamedSPILoader
-import org.apache.lucene.util.NamedSPILoader.NamedSPI
-
-// TODO: CHK
-//import  org.apache.lucene.codecs.lucene90.Lucene90Codec
 
 
 val logger = LoggerFactory.getLogger("LuceneParser")
@@ -60,7 +52,7 @@ fun toDateString(ft: FileTime): String {
 fun configureTika(): Tika {
     var config = TikaConfig(object {}.javaClass.getResourceAsStream("/tika-config.xml"))
     val tika = Tika(config)
-    // Allow tikato read unlimited characters
+    // Allow tika to read unlimited characters
     tika.maxStringLength = -1
     logger.debug("Will read up to ${tika.maxStringLength} length")
     return tika
@@ -80,19 +72,25 @@ fun configureIndexWriter(): IndexWriter {
     return indexWriter
 }
 
-fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<String, Long>) {
+fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<String, Any>) {
     println(it.name)
-    val attrs = Files.readAttributes<BasicFileAttributes>(Paths.get(it.path), BasicFileAttributes::class.java)
+    val attrs = Files.readAttributes(Paths.get(it.path), BasicFileAttributes::class.java)
     val modified = attrs.lastModifiedTime().toMillis()
 
-    val existingModTime = map.get(it.path)
-    logger.debug("Existing mod time is ${existingModTime} and current mod time is ${modified}")
-    if(existingModTime==null || existingModTime < modified) {
+    val existingModTime: Pair<Boolean, Long>? = (map[it.path] as Pair<Boolean, Long>?)
+    logger.debug("Existing mod time is $existingModTime and current mod time is $modified")
+    if(existingModTime==null || existingModTime.second < modified) {
         logger.debug("Need to parse and index ${it.name}")
-
+        var content: String? = null;
         try {
-            val content = tika.parseToString(it.absoluteFile)
-            map.put(it.path, modified)
+            content = tika.parseToString(it.absoluteFile)
+            map[it.path] = Pair(true, modified)
+        } catch (e: Exception) {
+            logger.info("File ${it.path} cannot be parsed, skipping")
+            map[it.path] = Pair(false, modified)
+        }
+
+        if (content!= null) {
             val doc = Document()
 
             doc.add(StringField("id", it.path, Field.Store.YES))
@@ -114,11 +112,9 @@ fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<
 
             val idTerm = Term("id", it.path)
             indexWriter.updateDocument(idTerm, doc)
-        } catch (e: ZeroByteFileException) {
-            logger.info("File ${it.path} has 0 length, skipping")
         }
     } else {
-        logger.debug("Skipping the file")
+        logger.debug("Skipping the file, not changed since we last saw it")
     }
 }
 
@@ -134,7 +130,6 @@ fun parse(sdir: String) {
     val requestSemaphore = Semaphore(4)
     runBlocking {
         val jobs = mutableListOf<Job>()
-
 
         dir.walk(direction = FileWalkDirection.TOP_DOWN).forEach {
             if (listOf("doc", "docx", "xls", "xlsx", "ppt", "pptx", "odt", "fodt", "ods", "fods", "odp", "fodp", "txt", "html", "md", "rtf").contains(it.extension.lowercase())) {
@@ -160,7 +155,7 @@ fun parse(sdir: String) {
 }
 
 private fun clearDeleted(
-    map: HTreeMap<String, Long>,
+    map: HTreeMap<String, Any>,
     uniquePaths: ConcurrentHashMap.KeySetView<String, Boolean>,
     indexWriter: IndexWriter
 ) {

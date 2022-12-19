@@ -3,10 +3,20 @@
     <h1>Keys</h1>
     Size: {{ keySize }}
     <br />
-    <ul>
+    <table class="table">
+        <tr>
+            <th>Filename</th>
+            <th>OK?</th>
+            <th>Mod Date</th>
+        </tr>
         {% for k in keys %}
-            <li>{{ k }}</li>
+        <tr>
+        <td>{{ k.first }}</td>
+        <td>{{ k.second.first }}</td>
+        <td>{{ k.second.second }}</td>
+
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
     <a href="/" class="btn btn-info">Back</a>
 {% endblock %}}

@@ -24,10 +24,6 @@
                 <label class="" for="query">Search for</label>
                 <input id='query' class="form-control form-control-sm" value="{{q}}" type="text" name="query" placeholder="">
             </div>
-            <div class="col-12">
-                <label class="" for="number">Result count</label>
-                <input id="number" class="form-control form-control-sm" value="{{n}}" type="number" name="number" placeholder="">
-            </div>
         </div>
         <div class="row">
             <div class="col">
@@ -87,7 +83,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog  modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="helpModalLabel">How to search</h5>
@@ -110,7 +106,10 @@
         </div>
     </div>
 </div>
-Showing {{ n }} from {{ total }} results
+{% if q != "" %}
+Showing {{ showing }} from {{ total }} results<br />
+Total time: {{ totalTime / 1000000 }} ms
+{% endif %}
 
 <nav aria-label="Pagination">
     <ul class="pagination">
