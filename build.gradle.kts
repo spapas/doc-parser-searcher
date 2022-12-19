@@ -1,18 +1,19 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+
 plugins {
+    application
     kotlin("jvm") version "1.7.10"
     id("io.ktor.plugin") version "2.2.1"
-
 }
 
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
+
 }
 
 group = "gr.hcg"
 version = "1.0-SNAPSHOT"
-
 
 repositories {
     mavenCentral()
@@ -57,6 +58,14 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "14"
 }
 
+task("koko") {
+    project.logger.lifecycle("my message visible by default")
+
+}
+
+tasks.named("buildFatJar") {
+    finalizedBy("koko")
+}

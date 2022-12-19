@@ -29,6 +29,10 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.schedule
 import org.apache.lucene.codecs.PostingsFormat
+import org.apache.lucene.codecs.lucene90.Lucene90PostingsFormat
+import org.apache.lucene.util.NamedSPILoader
+import org.apache.lucene.util.NamedSPILoader.NamedSPI
+
 // TODO: CHK
 //import  org.apache.lucene.codecs.lucene90.Lucene90Codec
 
@@ -36,8 +40,11 @@ import org.apache.lucene.codecs.PostingsFormat
 val logger = LoggerFactory.getLogger("LuceneParser")
 
 fun init(directory: String, interval: Int) {
-    // TODO: CHK
-    PostingsFormat.availablePostingsFormats()
+    val x =  PostingsFormat.availablePostingsFormats()
+    if(!x.contains("Lucene90")) {
+        throw Exception("Lucene90 Not found!")
+    }
+
     logger.info("Lucene parser init, directory: ${directory}, interval: ${interval} minutes")
     Timer("Parser").schedule(
         0, TimeUnit.MINUTES.toMillis(interval.toLong())) {
@@ -62,11 +69,14 @@ fun configureTika(): Tika {
 fun configureIndexWriter(dir: String): IndexWriter {
     //We open a File System directory as we want to store the index on our local file system.
     val directory: Directory = FSDirectory.open(Paths.get("lucene_index"))
+
     //The analyzer is used to perform analysis on text of documents and create the terms that will be added in the index.
     val analyzer: Analyzer = GreekAnalyzer()
     val indexWriterConfig = IndexWriterConfig(analyzer)
+
     // NOTE: IndexWriter instances are completely thread safe, meaning multiple threads can call any of its methods, concurrently. If your application requires external synchronization, you should not synchronize on the IndexWriter instance as this may cause deadlock; use your own (non-Lucene) objects instead.
     val indexWriter = IndexWriter(directory, indexWriterConfig)
+
     return indexWriter
 }
 
