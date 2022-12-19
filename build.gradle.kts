@@ -44,6 +44,7 @@ dependencies {
     implementation("org.apache.lucene:lucene-queryparser:$lucene_version")
     implementation("org.apache.lucene:lucene-highlighter:$lucene_version")
     implementation("org.apache.lucene:lucene-analyzers-common:8.11.2")
+    //implementation("org.apache.lucene:lucene-analyzers-common:$lucene_version")
 
     implementation("org.mapdb:mapdb:3.0.9")
 
