@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87922cd0-d5d7-4701-ac16-55524a796988" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/READMEmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/services/org.apache.lucene.codecs.Codec" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/services/org.apache.lucene.codecs.PostingsFormat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/Application.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/parser/lucene_parser.kt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/parser/lucene_parser.kt.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.conf" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,7 +127,7 @@
       <workItem from="1671199132185" duration="2881000" />
       <workItem from="1671214173731" duration="12646000" />
       <workItem from="1671459282394" duration="4662000" />
-      <workItem from="1671464006036" duration="4632000" />
+      <workItem from="1671464006036" duration="6613000" />
     </task>
     <servers />
   </component>
@@ -156,17 +153,17 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/Application.kt</url>
-          <line>158</line>
+          <line>169</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/Application.kt</url>
-          <line>208</line>
+          <line>219</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/parser/lucene_parser.kt.kt</url>
-          <line>48</line>
+          <line>47</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>

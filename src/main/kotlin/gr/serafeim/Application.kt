@@ -58,11 +58,32 @@ data class SearchParams(
     val p: Int,
     val path: String?,
     val createdFrom: Date?,
-    val createdTo: Date?
+    val createdTo: Date?,
+    val modifiedFrom: Date?,
+    val modifiedTo: Date?,
+    val accessedFrom: Date?,
+    val accessedTo: Date?
 )
 
 fun fromDateString(s: String): Date {
     return DateTools.stringToDate(s)
+}
+
+fun dateToMillis(d: Date?): Long {
+    if(d==null) {
+        return 0
+    }
+    return d.time
+}
+
+fun addDateQuery(bqb: BooleanQuery.Builder, dateFrom: Date?, dateTo: Date?, what: String) {
+    if (dateFrom != null || dateTo != null) {
+        val fromMillis = dateToMillis(dateFrom)
+        val toMillis = dateToMillis(dateTo)
+        val query3: Query = LongPoint.newRangeQuery(what, fromMillis, toMillis)
+        bqb.add(query3, BooleanClause.Occur.FILTER)
+    }
+
 }
 
 fun search(sp: SearchParams): Results {
@@ -82,22 +103,9 @@ fun search(sp: SearchParams): Results {
     bqb.add(query2a, BooleanClause.Occur.SHOULD)
     bqb.setMinimumNumberShouldMatch(1)
 
-    if (sp.createdTo != null || sp.createdFrom != null) {
-        val createdFromMillis = if (sp.createdFrom != null) {
-            sp.createdFrom.time
-        } else {
-            0
-        }
-
-        val createdToMillis = if (sp.createdTo != null) {
-            sp.createdTo.time
-        } else {
-            Long.MAX_VALUE
-        }
-        val query3: Query = LongPoint.newRangeQuery("created_point", createdFromMillis, createdToMillis)
-        bqb.add(query3, BooleanClause.Occur.FILTER)
-    }
-
+    addDateQuery(bqb, sp.createdFrom, sp.createdTo, "created_point")
+    addDateQuery(bqb, sp.modifiedFrom, sp.modifiedTo, "modified_point")
+    addDateQuery(bqb, sp.accessedFrom, sp.accessedTo, "accessed_point")
 
     if (sp.path != null && sp.path != "") {
         val query4: Query = WildcardQuery(Term("path", sp.path))
@@ -153,9 +161,12 @@ fun search(sp: SearchParams): Results {
     return Results(results = results, total = collector.totalHits)
 }
 
-fun toDate(s: String): Date {
-    val formatter = SimpleDateFormat("yyyy-MM-dd")
-    return formatter.parse(s)
+fun toDate(s: String): Date? {
+    if (s!="") {
+        val formatter = SimpleDateFormat("yyyy-MM-dd")
+        return formatter.parse(s)
+    }
+    return null
 }
 
 fun nextPage(req: ApplicationRequest, p: Int, n: Int, total: Int): String {
@@ -230,21 +241,22 @@ fun Application.module() {
             val n = call.request.queryParameters.get("number") ?: "10"
             val p = call.request.queryParameters.get("page") ?: "1"
             val path = call.request.queryParameters.get("path") ?: ""
-            val created_from = call.request.queryParameters.get("created-from") ?: ""
-            val created_to = call.request.queryParameters.get("created-to") ?: ""
+            val createdFromStr = call.request.queryParameters.get("created-from") ?: ""
+            val createdToStr = call.request.queryParameters.get("created-to") ?: ""
+            val modifiedFromStr = call.request.queryParameters.get("modified-from") ?: ""
+            val modifiedToStr = call.request.queryParameters.get("modified-to") ?: ""
+            val accessedFromStr = call.request.queryParameters.get("modified-from") ?: ""
+            val accessedToStr = call.request.queryParameters.get("modified-to") ?: ""
+            val createdFrom = toDate(createdFromStr)
+            val createdTo = toDate(createdToStr)
+            val modifiedFrom = toDate(modifiedFromStr)
+            val modifiedTo = toDate(modifiedToStr)
+            val accessedFrom = toDate(accessedFromStr)
+            val accessedTo = toDate(accessedToStr)
 
             var results = listOf<Result>()
             if (q != "") {
-                val createdTo = if (created_to != null && created_to != "") {
-                    toDate(created_to)
-                } else {
-                    null
-                }
-                val createdFrom = if (created_from != null && created_from != "") {
-                    toDate(created_from)
-                } else {
-                    null
-                }
+
 
                 val sp = SearchParams(
                     q = q,
@@ -252,7 +264,11 @@ fun Application.module() {
                     n = n.toInt(),
                     path = path,
                     createdFrom = createdFrom,
-                    createdTo = createdTo
+                    createdTo = createdTo,
+                    modifiedFrom = modifiedFrom,
+                    modifiedTo = modifiedTo,
+                    accessedFrom = accessedFrom,
+                    accessedTo = accessedTo,
                 )
                 try {
                     val rt = search(sp)
@@ -271,8 +287,12 @@ fun Application.module() {
                         "q" to q,
                         "page" to p,
                         "n" to n,
-                        "created_from" to created_from,
-                        "created_to" to created_to,
+                        "created_from" to createdFromStr,
+                        "created_to" to createdToStr,
+                        "modified_from" to modifiedFromStr,
+                        "modified_to" to modifiedToStr,
+                        "accessed_from" to accessedFromStr,
+                        "accessed_to" to accessedToStr,
                         "path" to path,
                         "next_page" to nextPage(call.request, p.toInt(), n.toInt(), total),
                         "prev_page" to prevPage(call.request, p.toInt())

@@ -66,7 +66,7 @@ fun configureTika(): Tika {
     return tika
 }
 
-fun configureIndexWriter(dir: String): IndexWriter {
+fun configureIndexWriter(): IndexWriter {
     //We open a File System directory as we want to store the index on our local file system.
     val directory: Directory = FSDirectory.open(Paths.get("lucene_index"))
 
@@ -109,8 +109,8 @@ fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<
             doc.add(StringField("modified", toDateString(attrs.lastModifiedTime()), Field.Store.YES))
 
             doc.add(LongPoint("created_point", attrs.creationTime().toMillis()))
-            doc.add(LongPoint("accessed_point", attrs.lastAccessTime().toMillis()))
             doc.add(LongPoint("modified_point", attrs.lastModifiedTime().toMillis()))
+            doc.add(LongPoint("accessed_point", attrs.lastAccessTime().toMillis()))
 
             val idTerm = Term("id", it.path)
             indexWriter.updateDocument(idTerm, doc)
@@ -122,15 +122,15 @@ fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<
     }
 }
 
-fun parse(dir: String) {
+fun parse(sdir: String) {
     logger.info("Parse START")
 
     val tika = configureTika()
-    val indexWriter = configureIndexWriter(dir)
+    val indexWriter = configureIndexWriter()
 
     var uniquePaths = ConcurrentHashMap.newKeySet<String>()
 
-    val dir = File(dir)
+    val dir = File(sdir)
     val requestSemaphore = Semaphore(4)
     runBlocking {
         val jobs = mutableListOf<Job>()
