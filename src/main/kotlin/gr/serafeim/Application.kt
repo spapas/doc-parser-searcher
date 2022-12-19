@@ -204,8 +204,7 @@ fun Application.module() {
                     "keys.html", mapOf(
                         "keys" to map.keys,
                         "keySize" to map.keys.size,
-
-                        )
+                    )
                 )
             )
         }

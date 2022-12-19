@@ -2,6 +2,8 @@ package gr.serafeim.parser
 
 import gr.serafeim.DBHolder
 import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.el.GreekAnalyzer
 import org.apache.lucene.document.*
@@ -26,11 +28,16 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.schedule
+import org.apache.lucene.codecs.PostingsFormat
+// TODO: CHK
+//import  org.apache.lucene.codecs.lucene90.Lucene90Codec
 
 
 val logger = LoggerFactory.getLogger("LuceneParser")
 
 fun init(directory: String, interval: Int) {
+    // TODO: CHK
+    PostingsFormat.availablePostingsFormats()
     logger.info("Lucene parser init, directory: ${directory}, interval: ${interval} minutes")
     Timer("Parser").schedule(
         0, TimeUnit.MINUTES.toMillis(interval.toLong())) {
@@ -114,14 +121,19 @@ fun parse(dir: String) {
     var uniquePaths = ConcurrentHashMap.newKeySet<String>()
 
     val dir = File(dir)
+    val requestSemaphore = Semaphore(4)
     runBlocking {
         val jobs = mutableListOf<Job>()
+
 
         dir.walk(direction = FileWalkDirection.TOP_DOWN).forEach {
             if (listOf("doc", "docx", "xls", "xlsx", "ppt", "pptx", "odt", "fodt", "ods", "fods", "odp", "fodp", "txt", "html", "md", "rtf").contains(it.extension.lowercase())) {
                 uniquePaths.add(it.path)
+
                 val job = GlobalScope.launch {
-                    parseDocument(it, indexWriter, tika, DBHolder.map)
+                    requestSemaphore.withPermit {
+                        parseDocument(it, indexWriter, tika, DBHolder.map)
+                    }
                 }
                 jobs.add(job)
             }

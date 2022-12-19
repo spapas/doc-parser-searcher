@@ -41,6 +41,7 @@ dependencies {
     implementation("io.ktor:ktor-server-pebble:$ktor_version")
 
     implementation("org.apache.lucene:lucene-core:$lucene_version")
+    implementation("org.apache.lucene:lucene-codecs:$lucene_version")
     implementation("org.apache.lucene:lucene-queryparser:$lucene_version")
     implementation("org.apache.lucene:lucene-highlighter:$lucene_version")
     implementation("org.apache.lucene:lucene-analyzers-common:8.11.2")
