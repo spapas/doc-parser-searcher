@@ -6,7 +6,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import org.apache.lucene.analysis.Analyzer
-import org.apache.lucene.analysis.el.GreekAnalyzer
 import org.apache.lucene.codecs.PostingsFormat
 import org.apache.lucene.document.*
 import org.apache.lucene.index.IndexWriter

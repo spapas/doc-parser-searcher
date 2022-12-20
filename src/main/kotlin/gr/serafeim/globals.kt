@@ -4,7 +4,7 @@ import org.apache.lucene.analysis.Analyzer
 import org.slf4j.LoggerFactory
 
 object GlobalsHolder {
-    val logger = LoggerFactory.getLogger("DB")
+    val logger = LoggerFactory.getLogger("Globals")
     private lateinit var analyzerClazz: Class<*>
 
     init {

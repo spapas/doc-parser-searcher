@@ -3,9 +3,7 @@ package gr.serafeim
 import gr.serafeim.web.SearchParams
 import gr.serafeim.web.dateToMillis
 import gr.serafeim.web.fromDateString
-import org.apache.commons.logging.Log
 import org.apache.lucene.analysis.Analyzer
-import org.apache.lucene.analysis.el.GreekAnalyzer
 import org.apache.lucene.document.Document
 import org.apache.lucene.document.LongPoint
 import org.apache.lucene.index.DirectoryReader

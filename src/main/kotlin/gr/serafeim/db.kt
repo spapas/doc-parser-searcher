@@ -2,7 +2,6 @@ package gr.serafeim
 
 import org.mapdb.DBMaker
 import org.mapdb.Serializer
-import org.mapdb.serializer.SerializerClass
 import org.slf4j.LoggerFactory
 
 object DBHolder {

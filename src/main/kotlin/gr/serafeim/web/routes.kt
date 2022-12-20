@@ -82,6 +82,7 @@ fun Route.index(pageSize: Int) {
         var total = 0
         var results = listOf<Result>()
         if (q != "") {
+            logger.info("Searching for: $q")
             val sp = SearchParams(
                 q = q,
                 p = p,
