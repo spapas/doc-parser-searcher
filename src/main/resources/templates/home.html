@@ -73,13 +73,14 @@
             </div>
         </div>
         <input type="submit" class="btn btn-primary" value="Search">
+        <a href="/" class="btn btn-info" >Clear</a>
 
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#helpModal">
             How to search
         </button>
     </form>
-
+<hr />
 
 <!-- Modal -->
 <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
@@ -91,13 +92,14 @@
             </div>
             <div class="modal-body">
                 <ul>
-                    <li>Simple: Enter a word and it will search for it using stemming rules for the configured language(i.e if you search for "apple" it will also return documents containing "apples")</li>
-                    <li>Phrase: If you want to search for an exact phrase, f.e "hello, world" you need to enter it between quotes. If you enter two words without the quotes it will search for documents containing one of these words. So searching for hello, world (without quotes) will return documents containing hello and documents containing word (see boolean search for more explanation)</li>
-                    <li>Wildcard: You can do wildcard search: Searching for app* will return documents containing apple, applying or application. Use ? for a single letter, * for any number of characters and + for at least one character. The wildcard character cannot be on the start of your query, i.e *ppl will not work.</li>
-                    <li>Boolean: You can use boolean operators like AND OR and NOT to create more complex queries. Things like (apple AND orange) OR (not strawberry) should work. </li>
-                    <li>Always include/exclude: You can use the + or - operators before a word (or phrase) to include or exclude documents containing it. For example +apple +orange -strawberry will return documents containing apple and orange but not strawberry.</li>
-                    <li>Distance: You can search by distance using the ~ operator. For example, "commit local"~3 will search for documents that have the words commit and local on a distance less than 3. That means that a document containing the phrase "commit all changes to local dev" will be returned but a document with the phrase "commit all changes to production and local dev" will not work.</li>
-                    <li>Combinations: You can use all the above in whatever combinations: For example +"commit local"~3 +download -conf* will search documents containing the word commit near the word local and also contain the word download but do not contain any words starting with conf</li>
+                    <li><b>Simple:</b> Enter a word and it will search for it using stemming rules for the configured language(i.e if you search for "apple" it will also return documents containing "apples")</li>
+                    <li><b>Phrase:</b> If you want to search for an exact phrase, f.e "hello, world" you need to enter it between quotes. If you enter two words without the quotes it will search for documents containing one of these words. So searching for hello, world (without quotes) will return documents containing hello and documents containing word (see boolean search for more explanation)</li>
+                    <li><b>Wildcard:</b> You can do wildcard search: Searching for app* will return documents containing apple, applying or application. Use ? for a single letter, * for any number of characters and + for at least one character. The wildcard character cannot be on the start of your query, i.e *ppl will not work.</li>
+                    <li><b>Boolean:</b> You can use boolean operators like AND OR and NOT to create more complex queries. Things like (apple AND orange) OR (not strawberry) should work. </li>
+                    <li><b>Always include/exclude:</b> You can use the + or - operators before a word (or phrase) to include or exclude documents containing it. For example +apple +orange -strawberry will return documents containing apple and orange but not strawberry.</li>
+                    <li><b>Distance:</b> You can search by distance using the ~ operator. For example, "commit local"~3 will search for documents that have the words commit and local on a distance less than 3. That means that a document containing the phrase "commit all changes to local dev" will be returned but a document with the phrase "commit all changes to production and local dev" will not work.</li>
+                    <li><b>Filtering:</b> You can use the extra search choices to filter based on the name of the folder that contains the document or its created/modified/accessed date. For example if you write appl* to the folder it will only return documents that are contained within a folder named apples or applications (this includes all ancestor folders).</li>
+                    <li><b>Combinations:</b> You can use all the above in whatever combinations: For example +"commit local"~3 +download -conf* will search documents containing the word commit near the word local and also contain the word download but do not contain any words starting with conf</li>
                 </ul>
             </div>
             <div class="modal-footer">
@@ -107,10 +109,11 @@
     </div>
 </div>
 {% if q != "" %}
-Showing {{ showing }} from {{ total }} results<br />
-Total time: {{ totalTime / 1000000 }} ms
-{% endif %}
 
+    <h3>Results</h3>
+
+    Showing {{ showingFrom }} - {{ showingTo }} from {{ total }} results<br />
+    Total time: {{ totalTime / 1000000 }} ms
 <nav aria-label="Pagination">
     <ul class="pagination">
         <li class="page-item"><a class="page-link" href="{{ prev_page }}">Previous</a></li>
@@ -118,14 +121,14 @@ Total time: {{ totalTime / 1000000 }} ms
         <li class="page-item"><a class="page-link" href="{{ next_page }}">Next</a></li>
     </ul>
 </nav>
-<h3>Results</h3>
+
     <ul>
     {% for r in results %}
         <li class="result">
             <h4 class="header">{{ r.name }}</h4>
 
             <a href='/download?path={{ r.id|escape(strategy="url_param")  }}'>{{ r.id }}</a><br />
-            Created / modified / Accessed: {{ r.created }} / {{ r.modified }} / {{ r.accessed }}<br />
+            Created: {{ r.created }} / Modified: {{ r.modified }} / Accessed: {{ r.accessed }}<br />
 
             <h5>Matches</h5>
             <ul>
@@ -156,4 +159,14 @@ Total time: {{ totalTime / 1000000 }} ms
         <li>Nothing found!</li>
     {% endfor %}
     </ul>
+
+<nav aria-label="Pagination">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="{{ prev_page }}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">{{ page }}</a></li>
+        <li class="page-item"><a class="page-link" href="{{ next_page }}">Next</a></li>
+    </ul>
+</nav>
+
+{% endif %}
 {% endblock %}

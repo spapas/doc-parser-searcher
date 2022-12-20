@@ -40,9 +40,9 @@ fun fromDateString(s: String): Date {
     return DateTools.stringToDate(s)
 }
 
-fun dateToMillis(d: Date?): Long {
+fun dateToMillis(d: Date?, default: Long): Long {
     if(d==null) {
-        return 0
+        return default
     }
     return d.time
 }

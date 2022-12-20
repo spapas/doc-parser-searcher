@@ -64,7 +64,7 @@ fun Route.index(pageSize: Int) {
 
         logger.info("Hi from /")
         val q = call.request.queryParameters.get("query") ?: ""
-        val p = call.request.queryParameters.get("page") ?: "1"
+        val p = call.request.queryParameters.get("page")?.toInt() ?: 1
         val path = call.request.queryParameters.get("path") ?: ""
         val createdFromStr = call.request.queryParameters.get("created-from") ?: ""
         val createdToStr = call.request.queryParameters.get("created-to") ?: ""
@@ -84,7 +84,7 @@ fun Route.index(pageSize: Int) {
         if (q != "") {
             val sp = SearchParams(
                 q = q,
-                p = p.toInt(),
+                p = p,
                 n = pageSize,
                 path = path,
                 createdFrom = createdFrom,
@@ -114,7 +114,8 @@ fun Route.index(pageSize: Int) {
                     "q" to q,
                     "page" to p,
                     "totalTime" to totalTime,
-                    "showing" to if (pageSize > total) { total } else { pageSize },
+                    "showingFrom" to pageSize * (p-1) + 1,
+                    "showingTo" to if (pageSize * p < total) { pageSize * p} else { total },
                     "created_from" to createdFromStr,
                     "created_to" to createdToStr,
                     "modified_from" to modifiedFromStr,

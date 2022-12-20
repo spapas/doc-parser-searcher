@@ -1,11 +1,13 @@
 package gr.serafeim.parser
 
 import gr.serafeim.DBHolder
+import gr.serafeim.GlobalsHolder
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import org.apache.lucene.analysis.Analyzer
 import org.apache.lucene.analysis.el.GreekAnalyzer
+import org.apache.lucene.codecs.PostingsFormat
 import org.apache.lucene.document.*
 import org.apache.lucene.index.IndexWriter
 import org.apache.lucene.index.IndexWriterConfig
@@ -14,7 +16,6 @@ import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
 import org.apache.tika.Tika
 import org.apache.tika.config.TikaConfig
-import org.apache.tika.exception.ZeroByteFileException
 import org.mapdb.HTreeMap
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -26,7 +27,6 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.schedule
-import org.apache.lucene.codecs.PostingsFormat
 
 
 val logger = LoggerFactory.getLogger("LuceneParser")
@@ -63,7 +63,7 @@ fun configureIndexWriter(): IndexWriter {
     val directory: Directory = FSDirectory.open(Paths.get("lucene_index"))
 
     //The analyzer is used to perform analysis on text of documents and create the terms that will be added in the index.
-    val analyzer: Analyzer = GreekAnalyzer()
+    val analyzer: Analyzer = GlobalsHolder.getAnalyzerInstance()
     val indexWriterConfig = IndexWriterConfig(analyzer)
 
     // NOTE: IndexWriter instances are completely thread safe, meaning multiple threads can call any of its methods, concurrently. If your application requires external synchronization, you should not synchronize on the IndexWriter instance as this may cause deadlock; use your own (non-Lucene) objects instead.
@@ -132,15 +132,17 @@ fun parse(sdir: String) {
         val jobs = mutableListOf<Job>()
 
         dir.walk(direction = FileWalkDirection.TOP_DOWN).forEach {
-            if (listOf("doc", "docx", "xls", "xlsx", "ppt", "pptx", "odt", "fodt", "ods", "fods", "odp", "fodp", "txt", "html", "md", "rtf").contains(it.extension.lowercase())) {
-                uniquePaths.add(it.path)
+            if (!it.name.startsWith("~$")) {
+                if (listOf("doc", "docx", "xls", "xlsx", "ppt", "pptx", "odt", "fodt", "ods", "fods", "odp", "fodp", "txt", "html", "md", "rtf").contains(it.extension.lowercase())) {
+                    uniquePaths.add(it.path)
 
-                val job = GlobalScope.launch {
-                    requestSemaphore.withPermit {
-                        parseDocument(it, indexWriter, tika, DBHolder.map)
+                    val job = GlobalScope.launch {
+                        requestSemaphore.withPermit {
+                            parseDocument(it, indexWriter, tika, DBHolder.map)
+                        }
                     }
+                    jobs.add(job)
                 }
-                jobs.add(job)
             }
         }
         jobs.joinAll()

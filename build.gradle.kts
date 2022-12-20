@@ -40,6 +40,8 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-pebble:$ktor_version")
+    implementation("io.ktor:ktor-server-auth:$ktor_version")
+    implementation("io.ktor:ktor-server-auth-ldap:$ktor_version")
 
     implementation("org.apache.lucene:lucene-core:$lucene_version")
     implementation("org.apache.lucene:lucene-codecs:$lucene_version")

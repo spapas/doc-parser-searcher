@@ -39,8 +39,8 @@ data class Result(
 
 fun addDateQuery(bqb: BooleanQuery.Builder, dateFrom: Date?, dateTo: Date?, what: String) {
     if (dateFrom != null || dateTo != null) {
-        val fromMillis = dateToMillis(dateFrom)
-        val toMillis = dateToMillis(dateTo)
+        val fromMillis = dateToMillis(dateFrom, 0L)
+        val toMillis = dateToMillis(dateTo, Long.MAX_VALUE)
         val query3: Query = LongPoint.newRangeQuery(what, fromMillis, toMillis)
         bqb.add(query3, BooleanClause.Occur.FILTER)
     }
@@ -52,7 +52,7 @@ object SearchHolder {
     private val directory: Directory = FSDirectory.open(Paths.get("lucene_index"))
     private val reader: DirectoryReader = DirectoryReader.open(directory)
     private val indexSearcher = IndexSearcher(reader)
-    private val analyzer: Analyzer = GreekAnalyzer()
+    private val analyzer: Analyzer = GlobalsHolder.getAnalyzerInstance()
 
     init {
         logger.info("Search Singleton class invoked.")
@@ -113,7 +113,7 @@ object SearchHolder {
 
             val fragments = fragmentHighlighter.getBestFragments(analyzer.tokenStream("text", text), text, 10)
 
-            val htext = highlighter.getBestFragment(analyzer, "text", text)?:"";
+            val htext = highlighter.getBestFragment(analyzer, "text", text)?:text;
             Result(
                 id = id,
                 text = htext,
