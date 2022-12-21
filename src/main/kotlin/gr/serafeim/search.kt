@@ -78,6 +78,11 @@ object SearchHolder {
             bqb.add(query4, BooleanClause.Occur.FILTER)
         }
 
+        if (sp.ext != null && sp.ext != "") {
+            val query5: Query = WildcardQuery(Term("extension", sp.ext))
+            bqb.add(query5, BooleanClause.Occur.FILTER)
+        }
+
         val booleanQuery = bqb.build()
         val collector = TopScoreDocCollector.create(99999, 100)
 

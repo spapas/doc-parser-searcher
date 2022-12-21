@@ -99,7 +99,7 @@ fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<
             it.path.split(File.separator).forEach {
                 doc.add(StringField("path", it, Field.Store.YES))
             }
-            doc.add(StringField("extension", it.name, Field.Store.YES))
+            doc.add(StringField("extension", it.extension, Field.Store.YES))
 
             doc.add(StringField("created", toDateString(attrs.creationTime()), Field.Store.YES))
             doc.add(StringField("accessed", toDateString(attrs.lastAccessTime()), Field.Store.YES))
