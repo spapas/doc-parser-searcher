@@ -132,7 +132,7 @@ fun parse(sdir: String) {
 
         dir.walk(direction = FileWalkDirection.TOP_DOWN).forEach {
             if (!it.name.startsWith("~$")) {
-                if (listOf("doc", "docx", "xls", "xlsx", "ppt", "pptx", "odt", "fodt", "ods", "fods", "odp", "fodp", "txt", "html", "md", "rtf").contains(it.extension.lowercase())) {
+                if (GlobalsHolder.parseExtensions.contains(it.extension.lowercase())) {
                     uniquePaths.add(it.path)
 
                     val job = GlobalScope.launch {
