@@ -17,6 +17,8 @@ val logger: Logger = LoggerFactory.getLogger(Application::class.java)
 
 fun Application.module() {
 
+    logger.info("DB ok, has ${DBHolder.map.keys.size} keys!")
+
     val directory = environment.config.propertyOrNull("parser.directory")?.getString() ?: "."
     val interval = environment.config.propertyOrNull("parser.interval")?.getString()?.toInt() ?: 60
     val pageSize = environment.config.propertyOrNull("ktor.pageSize")?.getString()?.toInt() ?: 10
