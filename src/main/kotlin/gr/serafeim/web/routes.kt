@@ -15,6 +15,7 @@ data class SearchParams(
     val n: Int,
     val p: Int,
     val path: String?,
+    val ext: String?,
     val createdFrom: Date?,
     val createdTo: Date?,
     val modifiedFrom: Date?,
@@ -66,6 +67,7 @@ fun Route.index(pageSize: Int) {
         val q = call.request.queryParameters.get("query") ?: ""
         val p = call.request.queryParameters.get("page")?.toInt() ?: 1
         val path = call.request.queryParameters.get("path") ?: ""
+        val ext = call.request.queryParameters.get("ext") ?: ""
         val createdFromStr = call.request.queryParameters.get("created-from") ?: ""
         val createdToStr = call.request.queryParameters.get("created-to") ?: ""
         val modifiedFromStr = call.request.queryParameters.get("modified-from") ?: ""
@@ -88,6 +90,7 @@ fun Route.index(pageSize: Int) {
                 p = p,
                 n = pageSize,
                 path = path,
+                ext = ext,
                 createdFrom = createdFrom,
                 createdTo = createdTo,
                 modifiedFrom = modifiedFrom,
@@ -124,6 +127,7 @@ fun Route.index(pageSize: Int) {
                     "accessed_from" to accessedFromStr,
                     "accessed_to" to accessedToStr,
                     "path" to path,
+                    "ext" to ext,
                     "next_page" to nextPage(call.request, p.toInt(), pageSize, total),
                     "prev_page" to prevPage(call.request, p.toInt())
                 )

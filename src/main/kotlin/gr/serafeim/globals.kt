@@ -6,13 +6,18 @@ import org.slf4j.LoggerFactory
 object GlobalsHolder {
     val logger = LoggerFactory.getLogger("Globals")
     private lateinit var analyzerClazz: Class<*>
+    lateinit var parseExtensions: List<String>
 
     init {
         logger.info("Globals Singleton class invoked.")
     }
 
-    fun setAnalyzerClass(s: String): Unit {
+    fun setAnalyzerClass(s: String) {
         analyzerClazz = Class.forName(s)
+    }
+
+    fun setExtensions(s: String) {
+        parseExtensions = s.split(",").map { it.trim() }
     }
 
     fun getAnalyzerInstance(): Analyzer {

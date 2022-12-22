@@ -17,10 +17,14 @@ val logger: Logger = LoggerFactory.getLogger(Application::class.java)
 
 fun Application.module() {
 
+    logger.info("DB ok, has ${DBHolder.map.keys.size} keys!")
+
     val directory = environment.config.propertyOrNull("parser.directory")?.getString() ?: "."
     val interval = environment.config.propertyOrNull("parser.interval")?.getString()?.toInt() ?: 60
     val pageSize = environment.config.propertyOrNull("ktor.pageSize")?.getString()?.toInt() ?: 10
-    val analyzerClazz = environment.config.propertyOrNull("analyzer_clazz")?.getString()?: "org.apache.lucene.analysis.el.GreekAnalyzer"
+
+    val analyzerClazz = environment.config.propertyOrNull("parser.analyzer_clazz")?.getString()?: "org.apache.lucene.analysis.el.GreekAnalyzer"
+    val parseExtensions = environment.config.propertyOrNull("parser.extensions")?.getString()?: "doc,docx,xls,xlsx"
 
     val userUsername = environment.config.propertyOrNull("ktor.auth.user_username")?.getString() ?: "."
     val userPassword = environment.config.propertyOrNull("ktor.auth.user_password")?.getString() ?: "."
@@ -28,6 +32,7 @@ fun Application.module() {
     val adminPassword = environment.config.propertyOrNull("ktor.auth.admin_password")?.getString() ?: "."
 
     GlobalsHolder.setAnalyzerClass(analyzerClazz)
+    GlobalsHolder.setExtensions(parseExtensions)
 
     gr.serafeim.parser.init(directory, interval)
 
