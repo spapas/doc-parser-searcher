@@ -72,7 +72,7 @@ fun configureIndexWriter(): IndexWriter {
 }
 
 fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<String, Any>) {
-    println(it.name)
+    logger.debug(it.name)
     val attrs = Files.readAttributes(Paths.get(it.path), BasicFileAttributes::class.java)
     val modified = attrs.lastModifiedTime().toMillis()
 
