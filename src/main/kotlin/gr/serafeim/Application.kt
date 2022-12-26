@@ -1,9 +1,13 @@
 package gr.serafeim
 
 import com.mitchellbosecke.pebble.loader.ClasspathLoader
+import com.sksamuel.hoplite.ConfigLoaderBuilder
+import com.sksamuel.hoplite.addResourceSource
 import gr.serafeim.web.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
+import io.ktor.server.engine.*
+import io.ktor.server.jetty.*
 import io.ktor.server.pebble.*
 import io.ktor.server.routing.*
 import org.slf4j.Logger
@@ -11,78 +15,80 @@ import org.slf4j.Logger
 
 import org.slf4j.LoggerFactory
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+//fun main(): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 val logger: Logger = LoggerFactory.getLogger(Application::class.java)
 
-fun Application.module() {
-
+//fun Application.module() {
+fun main(args: Array<String>) {
     logger.info("DB ok, has ${DBHolder.map.keys.size} keys!")
+    val config = ConfigLoaderBuilder.default()
+        .addResourceSource("/application.props")
+        .build()
+        .loadConfigOrThrow<Config>()
 
-    val directory = environment.config.propertyOrNull("parser.directory")?.getString() ?: "."
-    val interval = environment.config.propertyOrNull("parser.interval")?.getString()?.toInt() ?: 60
-    val pageSize = environment.config.propertyOrNull("ktor.pageSize")?.getString()?.toInt() ?: 10
+    val userUsername = config.server.userUsername
+    val userPassword = config.server.userPassword
+    val adminUsername = config.server.adminUsername
+    val adminPassword = config.server.adminPassword
 
-    val analyzerClazz = environment.config.propertyOrNull("parser.analyzer_clazz")?.getString()?: "org.apache.lucene.analysis.el.GreekAnalyzer"
-    val parseExtensions = environment.config.propertyOrNull("parser.extensions")?.getString()?: "doc,docx,xls,xlsx"
+    GlobalsHolder.setAnalyzerClass(config.parser.analyzerClazz)
+    GlobalsHolder.setExtensions(config.parser.parseExtensions)
 
-    val userUsername = environment.config.propertyOrNull("ktor.auth.user_username")?.getString() ?: "."
-    val userPassword = environment.config.propertyOrNull("ktor.auth.user_password")?.getString() ?: "."
-    val adminUsername = environment.config.propertyOrNull("ktor.auth.admin_username")?.getString() ?: "."
-    val adminPassword = environment.config.propertyOrNull("ktor.auth.admin_password")?.getString() ?: "."
+    gr.serafeim.parser.init(config.parser.directory, config.parser.interval)
 
-    GlobalsHolder.setAnalyzerClass(analyzerClazz)
-    GlobalsHolder.setExtensions(parseExtensions)
 
-    gr.serafeim.parser.init(directory, interval)
 
-    install(Pebble) {
-        loader(ClasspathLoader().apply {
-            prefix = "templates"
-        })
-    }
+    embeddedServer(Jetty, port = config.server.port) {
+        install(Pebble) {
+            loader(ClasspathLoader().apply {
+                prefix = "templates"
+            })
+        }
 
-    install(Authentication) {
-        basic("auth-basic-user") {
-            realm = "User access"
-            validate { credentials ->
-                if (credentials.name == userUsername && credentials.password == userPassword) {
-                    UserIdPrincipal(credentials.name)
-                } else {
-                    null
+        install(Authentication) {
+            basic("auth-basic-user") {
+                realm = "User access"
+                validate { credentials ->
+                    if (credentials.name == userUsername && credentials.password == userPassword) {
+                        UserIdPrincipal(credentials.name)
+                    } else {
+                        null
+                    }
+                }
+            }
+
+            basic("auth-basic-admin") {
+                realm = "Admin access"
+                validate { credentials ->
+                    if (credentials.name == adminUsername && credentials.password == adminPassword) {
+                        UserIdPrincipal(credentials.name)
+                    } else {
+                        null
+                    }
                 }
             }
         }
 
-        basic("auth-basic-admin") {
-            realm = "Admin access"
-            validate { credentials ->
-                if (credentials.name == adminUsername && credentials.password == adminPassword) {
-                    UserIdPrincipal(credentials.name)
-                } else {
-                    null
+        routing {
+
+            if (userUsername != "" && userPassword != "") {
+                authenticate("auth-basic-user") {
+                    index(config.parser.pageSize)
+                    downloadFile()
                 }
-            }
-        }
-    }
-
-    routing {
-
-        if(userUsername != "" && userPassword != "") {
-            authenticate("auth-basic-user") {
-                index(pageSize)
+            } else {
+                index(config.parser.pageSize)
                 downloadFile()
             }
-        } else {
-            index(pageSize)
-            downloadFile()
-        }
-        if(adminUsername != "" && adminPassword != "") {
-            authenticate("auth-basic-admin") {
+            if (adminUsername != "" && adminPassword != "") {
+                authenticate("auth-basic-admin") {
+                    listKeysRoute()
+                }
+            } else {
                 listKeysRoute()
             }
-        } else {
-            listKeysRoute()
         }
-    }
+    }.start(wait = true)
+
 }
