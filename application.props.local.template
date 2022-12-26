@@ -1,0 +1,14 @@
+env=dev
+
+parser.directory=.
+parser.interval=60
+parser.pageSize=10
+parser.analyzerClazzString=org.apache.lucene.analysis.el.GreekAnalyzer
+parser.parseExtensions=doc,docx,xls,xlsx,ppt,pptx,odt,fodt,ods,fods,odp,fodp,txt,html,md,rtf,pdf
+
+server.port=8080
+server.host=127.0.0.1
+server.userUsername=
+server.userPassword=
+server.adminUsername=
+server.adminPassword=

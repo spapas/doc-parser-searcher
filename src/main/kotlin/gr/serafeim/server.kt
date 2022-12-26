@@ -1,8 +1,7 @@
 package gr.serafeim
 
 import com.mitchellbosecke.pebble.loader.ClasspathLoader
-import com.sksamuel.hoplite.ConfigLoaderBuilder
-import com.sksamuel.hoplite.addResourceSource
+import gr.serafeim.conf.ConfigHolder
 import gr.serafeim.web.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -10,21 +9,13 @@ import io.ktor.server.engine.*
 import io.ktor.server.jetty.*
 import io.ktor.server.pebble.*
 import io.ktor.server.routing.*
-import org.slf4j.Logger
+import mu.KotlinLogging
 
+fun server() {
+    val logger = KotlinLogging.logger {}
 
-import org.slf4j.LoggerFactory
-
-//fun main(): Unit = io.ktor.server.netty.EngineMain.main(args)
-
-val logger: Logger = LoggerFactory.getLogger(Application::class.java)
-
-//fun Application.module() {
-fun main(args: Array<String>) {
-    logger.info("DB ok, has ${DBHolder.map.keys.size} keys!")
     val config = ConfigHolder.config
 
-    println(config)
     val userUsername = config.server.userUsername
     val userPassword = config.server.userPassword
     val adminUsername = config.server.adminUsername

@@ -1,6 +1,6 @@
 package gr.serafeim.parser
 
-import gr.serafeim.ConfigHolder
+import gr.serafeim.conf.ConfigHolder
 import gr.serafeim.DBHolder
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Semaphore
@@ -36,7 +36,7 @@ fun init(directory: String, interval: Int) {
         throw Exception("Lucene90 Not found!")
     }
 
-    logger.info("Lucene parser init, directory: ${directory}, interval: ${interval} minutes")
+    logger.info("Lucene parser init, directory: $directory, interval: $interval minutes")
     Timer("Parser").schedule(
         0, TimeUnit.MINUTES.toMillis(interval.toLong())) {
         logger.debug("Parse START init....")

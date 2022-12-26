@@ -1,5 +1,6 @@
 package gr.serafeim
 
+import gr.serafeim.conf.ConfigHolder
 import gr.serafeim.web.SearchParams
 import gr.serafeim.web.dateToMillis
 import gr.serafeim.web.fromDateString
