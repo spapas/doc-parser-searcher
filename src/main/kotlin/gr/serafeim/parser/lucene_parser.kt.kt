@@ -1,9 +1,7 @@
 package gr.serafeim.parser
 
-import gr.serafeim.Config
 import gr.serafeim.ConfigHolder
 import gr.serafeim.DBHolder
-import gr.serafeim.GlobalsHolder
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
@@ -64,7 +62,7 @@ fun configureIndexWriter(): IndexWriter {
     val directory: Directory = FSDirectory.open(Paths.get("lucene_index"))
 
     //The analyzer is used to perform analysis on text of documents and create the terms that will be added in the index.
-    val analyzer: Analyzer = GlobalsHolder.getAnalyzerInstance()
+    val analyzer: Analyzer = ConfigHolder.getAnalyzerInstance()
     val indexWriterConfig = IndexWriterConfig(analyzer)
 
     // NOTE: IndexWriter instances are completely thread safe, meaning multiple threads can call any of its methods, concurrently. If your application requires external synchronization, you should not synchronize on the IndexWriter instance as this may cause deadlock; use your own (non-Lucene) objects instead.

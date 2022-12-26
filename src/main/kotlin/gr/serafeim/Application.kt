@@ -30,12 +30,7 @@ fun main(args: Array<String>) {
     val adminUsername = config.server.adminUsername
     val adminPassword = config.server.adminPassword
 
-    GlobalsHolder.setAnalyzerClass(config.parser.analyzerClazz)
-    //GlobalsHolder.setExtensions(config.parser.parseExtensions)
-
     gr.serafeim.parser.init(config.parser.directory, config.parser.interval)
-
-
 
     embeddedServer(Jetty, port = config.server.port, host = config.server.host) {
         install(Pebble) {
