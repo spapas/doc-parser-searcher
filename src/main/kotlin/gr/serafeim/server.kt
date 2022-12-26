@@ -13,7 +13,7 @@ import mu.KotlinLogging
 
 fun server() {
     val logger = KotlinLogging.logger {}
-
+    logger.info("Starting server...")
     val config = ConfigHolder.config
 
     val userUsername = config.server.userUsername
@@ -23,7 +23,7 @@ fun server() {
 
     gr.serafeim.parser.init(config.parser.directory, config.parser.interval)
 
-    embeddedServer(Jetty, port = config.server.port, host = config.server.host) {
+    embeddedServer(Jetty, port = config.server.port, host = config.server.host, watchPaths = listOf("classes", "resources")) {
         install(Pebble) {
             loader(ClasspathLoader().apply {
                 prefix = "templates"

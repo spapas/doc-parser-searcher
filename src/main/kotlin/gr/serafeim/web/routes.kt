@@ -6,6 +6,7 @@ import io.ktor.server.application.*
 import io.ktor.server.pebble.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import mu.KotlinLogging
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.*
@@ -25,7 +26,7 @@ data class SearchParams(
     val accessedTo: Date?
 )
 
-val logger = LoggerFactory.getLogger("web")
+val logger = KotlinLogging.logger {}
 
 fun Route.listKeysRoute() {
     get("/keys") {

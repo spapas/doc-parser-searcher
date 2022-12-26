@@ -44,4 +44,4 @@ bin/
 lucene_index/*
 map.db
 map.db.wal*
-*.local
+*.local.props
