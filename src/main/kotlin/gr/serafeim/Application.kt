@@ -22,24 +22,22 @@ val logger: Logger = LoggerFactory.getLogger(Application::class.java)
 //fun Application.module() {
 fun main(args: Array<String>) {
     logger.info("DB ok, has ${DBHolder.map.keys.size} keys!")
-    val config = ConfigLoaderBuilder.default()
-        .addResourceSource("/application.props")
-        .build()
-        .loadConfigOrThrow<Config>()
+    val config = ConfigHolder.config
 
+    println(config)
     val userUsername = config.server.userUsername
     val userPassword = config.server.userPassword
     val adminUsername = config.server.adminUsername
     val adminPassword = config.server.adminPassword
 
     GlobalsHolder.setAnalyzerClass(config.parser.analyzerClazz)
-    GlobalsHolder.setExtensions(config.parser.parseExtensions)
+    //GlobalsHolder.setExtensions(config.parser.parseExtensions)
 
     gr.serafeim.parser.init(config.parser.directory, config.parser.interval)
 
 
 
-    embeddedServer(Jetty, port = config.server.port) {
+    embeddedServer(Jetty, port = config.server.port, host = config.server.host) {
         install(Pebble) {
             loader(ClasspathLoader().apply {
                 prefix = "templates"

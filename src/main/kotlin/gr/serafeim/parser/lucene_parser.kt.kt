@@ -1,5 +1,7 @@
 package gr.serafeim.parser
 
+import gr.serafeim.Config
+import gr.serafeim.ConfigHolder
 import gr.serafeim.DBHolder
 import gr.serafeim.GlobalsHolder
 import kotlinx.coroutines.*
@@ -132,7 +134,7 @@ fun parse(sdir: String) {
 
         dir.walk(direction = FileWalkDirection.TOP_DOWN).forEach {
             if (!it.name.startsWith("~$")) {
-                if (GlobalsHolder.parseExtensions.contains(it.extension.lowercase())) {
+                if (ConfigHolder.config.parser.parseExtensions.contains(it.extension.lowercase())) {
                     uniquePaths.add(it.path)
 
                     val job = GlobalScope.launch {
