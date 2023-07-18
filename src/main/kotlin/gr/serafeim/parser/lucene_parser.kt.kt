@@ -49,11 +49,11 @@ fun toDateString(ft: FileTime): String {
 }
 
 fun configureTika(): Tika {
-    GlobalsHolder
-    var config = if (GlobalsHolder.externalTikaConfig == "") {
+
+    var config = if (ConfigHolder.config.parser.externalTikaConfig == null) {
         TikaConfig(object {}.javaClass.getResourceAsStream("/tika-config.xml"))
     } else {
-        TikaConfig(GlobalsHolder.externalTikaConfig)
+        TikaConfig(ConfigHolder.config.parser.externalTikaConfig)
     }
 
     val tika = Tika(config)
@@ -124,7 +124,7 @@ fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<
 }
 
 fun parse(sdir: String) {
-    logger.info("Parse START, extensions are ${GlobalsHolder.parseExtensions}")
+    logger.info("Parse START, extensions are ${ConfigHolder.config.parser.parseExtensions}")
 
     val tika = configureTika()
     val indexWriter = configureIndexWriter()

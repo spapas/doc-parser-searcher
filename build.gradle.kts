@@ -1,14 +1,17 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 
 plugins {
     application
-    kotlin("jvm") version "1.7.10"
-    id("io.ktor.plugin") version "2.2.1"
+    kotlin("jvm") version "1.9.0"
+    id("io.ktor.plugin") version "2.3.2"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 application {
-    mainClass.set("gr.serafeim.ApplicationKt")
+    mainClass.set("gr.serafeim.CuiKt")
 
 }
 
@@ -65,4 +68,13 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "14"
+}
+
+
+tasks {
+    named<ShadowJar>("shadowJar") {
+        mergeServiceFiles()
+        archiveBaseName.set("shadow")
+    }
+
 }

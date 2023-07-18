@@ -1,1 +1,2 @@
-gradlew buildFatJar 
+REM gradlew buildFatJar
+gradlew shadowJar

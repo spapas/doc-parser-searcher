@@ -7,7 +7,7 @@ import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.file
 import gr.serafeim.conf.ConfigHolder
 
-class Hello: CliktCommand() {
+class Main: CliktCommand() {
     val configFile by option("-c", "--config", help="Config file").file()
     val operation by argument("operation", help="What to run").choice("server", "clear", "index", "search")
     //val search by argument(help="What to search for").optional()
@@ -26,3 +26,5 @@ class Hello: CliktCommand() {
         }
     }
 }
+
+fun main(args: Array<String>) = Main().main(args)
