@@ -26,7 +26,7 @@ class Main: CliktCommand() {
             println("Search")
             val sh = SearchHolder.search(SearchParams("do", 10, 1))
             for(r: Result in sh.results) {
-                println(r.text)
+                println(r.path)
             }
 
         } else if(operation == "index") {

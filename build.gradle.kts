@@ -55,11 +55,11 @@ dependencies {
     implementation("org.apache.lucene:lucene-analyzers-common:8.11.2")
     //implementation("org.apache.lucene:lucene-analyzers-common:$lucene_version")
 
-    implementation("com.github.ajalt.clikt:clikt:3.5.0")
+    implementation("com.github.ajalt.clikt:clikt:4.1.0")
 
-    implementation("com.sksamuel.hoplite:hoplite-core:2.7.0")
+    implementation("com.sksamuel.hoplite:hoplite-core:2.7.4")
     implementation("org.mapdb:mapdb:3.0.9")
-    implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 }
 
 tasks.test {
