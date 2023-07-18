@@ -7,6 +7,7 @@ object GlobalsHolder {
     val logger = LoggerFactory.getLogger("Globals")
     private lateinit var analyzerClazz: Class<*>
     lateinit var parseExtensions: List<String>
+    var externalTikaConfig: String = ""
 
     init {
         logger.info("Globals Singleton class invoked.")

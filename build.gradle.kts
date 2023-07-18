@@ -19,9 +19,9 @@ repositories {
     mavenCentral()
 }
 
-val ktor_version = "2.2.1"
-val tika_version = "2.6.0"
-val lucene_version = "9.4.2"
+val ktor_version = "2.3.2"
+val tika_version = "2.8.0"
+val lucene_version = "9.7.0"
 
 dependencies {
     testImplementation(kotlin("test"))
@@ -29,11 +29,11 @@ dependencies {
     implementation("org.apache.tika:tika-parsers:$tika_version")
     implementation("org.apache.tika:tika-parsers-standard-package:$tika_version")
 
-    implementation("org.apache.logging.log4j:log4j-core:2.19.0")
-    implementation("org.slf4j:slf4j-api:2.0.5")
-    implementation("org.slf4j:slf4j-simple:2.0.5")
+    implementation("org.apache.logging.log4j:log4j-core:2.20.0")
+    implementation("org.slf4j:slf4j-api:2.0.7")
+    implementation("org.slf4j:slf4j-simple:2.0.7")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
 
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
@@ -47,6 +47,8 @@ dependencies {
     implementation("org.apache.lucene:lucene-codecs:$lucene_version")
     implementation("org.apache.lucene:lucene-queryparser:$lucene_version")
     implementation("org.apache.lucene:lucene-highlighter:$lucene_version")
+    implementation("org.apache.lucene:lucene-backward-codecs:$lucene_version")
+
     implementation("org.apache.lucene:lucene-analyzers-common:8.11.2")
     //implementation("org.apache.lucene:lucene-analyzers-common:$lucene_version")
 

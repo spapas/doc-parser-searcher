@@ -49,7 +49,13 @@ fun toDateString(ft: FileTime): String {
 }
 
 fun configureTika(): Tika {
-    var config = TikaConfig(object {}.javaClass.getResourceAsStream("/tika-config.xml"))
+    GlobalsHolder
+    var config = if (GlobalsHolder.externalTikaConfig == "") {
+        TikaConfig(object {}.javaClass.getResourceAsStream("/tika-config.xml"))
+    } else {
+        TikaConfig(GlobalsHolder.externalTikaConfig)
+    }
+
     val tika = Tika(config)
     // Allow tika to read unlimited characters
     tika.maxStringLength = -1
@@ -118,7 +124,7 @@ fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<
 }
 
 fun parse(sdir: String) {
-    logger.info("Parse START")
+    logger.info("Parse START, extensions are ${GlobalsHolder.parseExtensions}")
 
     val tika = configureTika()
     val indexWriter = configureIndexWriter()

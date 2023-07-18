@@ -6,9 +6,11 @@ import io.ktor.server.application.*
 import io.ktor.server.pebble.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.util.*
+import org.unbescape.html.HtmlEscape
 import java.io.File
 import java.util.*
-
+import java.net.URLEncoder;
 
 data class SearchParams(
     val q: String,
@@ -49,10 +51,10 @@ fun Route.downloadFile() {
         val map = DBHolder.map
         if (path in map.keys) {
             val file = File(path)
+            val cdVal = ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, URLEncoder.encode(file.name))
             call.response.header(
                 HttpHeaders.ContentDisposition,
-                ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, file.name)
-                    .toString()
+                cdVal.toString()
             )
             call.respondFile(file)
         }

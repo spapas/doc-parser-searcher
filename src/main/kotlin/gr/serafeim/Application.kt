@@ -1,11 +1,12 @@
 package gr.serafeim
 
-import com.mitchellbosecke.pebble.loader.ClasspathLoader
 import gr.serafeim.web.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.pebble.*
 import io.ktor.server.routing.*
+import io.ktor.server.response.*
+import io.pebbletemplates.pebble.loader.ClasspathLoader
 import org.slf4j.Logger
 
 
@@ -26,13 +27,14 @@ fun Application.module() {
     val analyzerClazz = environment.config.propertyOrNull("parser.analyzer_clazz")?.getString()?: "org.apache.lucene.analysis.el.GreekAnalyzer"
     val parseExtensions = environment.config.propertyOrNull("parser.extensions")?.getString()?: "doc,docx,xls,xlsx"
 
-    val userUsername = environment.config.propertyOrNull("ktor.auth.user_username")?.getString() ?: "."
-    val userPassword = environment.config.propertyOrNull("ktor.auth.user_password")?.getString() ?: "."
-    val adminUsername = environment.config.propertyOrNull("ktor.auth.admin_username")?.getString() ?: "."
-    val adminPassword = environment.config.propertyOrNull("ktor.auth.admin_password")?.getString() ?: "."
+    val userUsername = environment.config.propertyOrNull("ktor.auth.user_username")?.getString() ?: ""
+    val userPassword = environment.config.propertyOrNull("ktor.auth.user_password")?.getString() ?: ""
+    val adminUsername = environment.config.propertyOrNull("ktor.auth.admin_username")?.getString() ?: ""
+    val adminPassword = environment.config.propertyOrNull("ktor.auth.admin_password")?.getString() ?: ""
 
     GlobalsHolder.setAnalyzerClass(analyzerClazz)
     GlobalsHolder.setExtensions(parseExtensions)
+    GlobalsHolder.externalTikaConfig = environment.config.propertyOrNull("parser.external_tika_config")?.getString()?:""
 
     gr.serafeim.parser.init(directory, interval)
 

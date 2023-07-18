@@ -6,7 +6,7 @@
             <!-- this is not formally necessary, but prevents loading of unnecessary parser -->
             <parser-exclude class="org.apache.tika.parser.ocr.TesseractOCRParser"/>
         </parser>
-        <!--
+
         <parser class="org.apache.tika.parser.ocr.TesseractOCRParser">
             <params>
                 <param name="applyRotation" type="bool">false</param>
@@ -29,6 +29,6 @@
                 <param name="timeoutSeconds" type="int">120</param>
             </params>
         </parser>
-        -->
+
     </parsers>
 </properties>

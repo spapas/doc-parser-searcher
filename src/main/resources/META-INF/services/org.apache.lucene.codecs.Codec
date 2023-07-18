@@ -14,4 +14,4 @@
 #  limitations under the License.
 
 org.apache.lucene.codecs.simpletext.SimpleTextCodec
-org.apache.lucene.codecs.lucene94.Lucene94Codec
+org.apache.lucene.codecs.lucene95.Lucene95Codec

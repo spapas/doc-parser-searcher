@@ -6,8 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="87922cd0-d5d7-4701-ac16-55524a796988" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/Application.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/globals.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/globals.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/parser/lucene_parser.kt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/parser/lucene_parser.kt.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/web/routes.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/web/routes.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/services/org.apache.lucene.codecs.Codec" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/services/org.apache.lucene.codecs.Codec" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.conf" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/tika-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tika-config.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,8 +52,8 @@
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "ktor.last.update.timestamp": "1671655225592",
-    "last_opened_file_path": "C:/progr/kotlin/doc-parser-searcher/src/main/resources/templates",
+    "ktor.last.update.timestamp": "1689668211563",
+    "last_opened_file_path": "C:/progr/kotlin/docparser/src/main/resources",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -60,6 +66,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\progr\kotlin\docparser\src\main\resources" />
       <recent name="C:\progr\kotlin\doc-parser-searcher\src\main\resources\templates" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -128,6 +135,8 @@
       <workItem from="1671459282394" duration="4662000" />
       <workItem from="1671464006036" duration="10904000" />
       <workItem from="1671528784382" duration="7925000" />
+      <workItem from="1672213783823" duration="4000" />
+      <workItem from="1689666712133" duration="5748000" />
     </task>
     <servers />
   </component>
@@ -161,12 +170,12 @@
           <line>60</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/web/routes.kt</url>
+          <line>54</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="JetRunConfigurationType">
-        <watch expression="ok" language="kotlin" custom="import io.ktor.server.config.*" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>
