@@ -7,7 +7,12 @@ import org.slf4j.LoggerFactory
 import java.io.File
 
 
-data class Parser(val directory: String, val interval: Int, val pageSize: Int, val parseExtensions: List<String>, val analyzerClazzString: String, val externalTikaConfig: String?)
+data class Parser(val directory: String,
+                  val interval: Int,
+                  val pageSize: Int,
+                  val parseExtensions: List<String>,
+                  val analyzerClazzString: String,
+                  val externalTikaConfig: String?)
 data class Server(val host: String, val port: Int, val userUsername: String, val userPassword: String, val adminUsername: String, val adminPassword: String)
 data class Config(val env: String, val parser: Parser, val server: Server)
 

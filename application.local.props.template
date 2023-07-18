@@ -6,6 +6,7 @@ parser.pageSize=10
 parser.analyzerClazzString=org.apache.lucene.analysis.el.GreekAnalyzer
 parser.parseExtensions=doc,docx,xls,xlsx,ppt,pptx,odt,fodt,ods,fods,odp,fodp,txt,html,md,rtf,pdf
 
+
 server.port=8080
 server.host=127.0.0.1
 server.userUsername=

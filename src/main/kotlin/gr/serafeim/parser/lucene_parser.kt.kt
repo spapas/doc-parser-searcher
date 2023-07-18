@@ -132,10 +132,10 @@ fun parse(sdir: String) {
     var uniquePaths = ConcurrentHashMap.newKeySet<String>()
 
     val dir = File(sdir)
-    val requestSemaphore = Semaphore(4)
+    val requestSemaphore = Semaphore(8)
     runBlocking {
         val jobs = mutableListOf<Job>()
-
+        var totJobs = 0;
         dir.walk(direction = FileWalkDirection.TOP_DOWN).forEach {
             if (!it.name.startsWith("~$")) {
                 if (ConfigHolder.config.parser.parseExtensions.contains(it.extension.lowercase())) {
@@ -143,7 +143,11 @@ fun parse(sdir: String) {
 
                     val job = GlobalScope.launch {
                         requestSemaphore.withPermit {
+                            totJobs += 1
+                            logger.debug("Start job, $totJobs")
                             parseDocument(it, indexWriter, tika, DBHolder.map)
+                            totJobs -= 1
+                            logger.debug("End job, $totJobs")
                         }
                     }
                     jobs.add(job)

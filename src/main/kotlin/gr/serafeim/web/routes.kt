@@ -21,14 +21,14 @@ data class SearchParams(
     val q: String,
     val n: Int,
     val p: Int,
-    val path: String?,
-    val ext: String?,
-    val createdFrom: Date?,
-    val createdTo: Date?,
-    val modifiedFrom: Date?,
-    val modifiedTo: Date?,
-    val accessedFrom: Date?,
-    val accessedTo: Date?
+    val path: String? = null,
+    val ext: String? = null,
+    val createdFrom: Date? = null,
+    val createdTo: Date? = null,
+    val modifiedFrom: Date? = null,
+    val modifiedTo: Date? = null,
+    val accessedFrom: Date? = null,
+    val accessedTo: Date? = null
 )
 
 val logger = KotlinLogging.logger {}
