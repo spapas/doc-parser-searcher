@@ -1,5 +1,6 @@
 package gr.serafeim
 
+import gr.serafeim.conf.ConfigHolder
 import gr.serafeim.web.SearchParams
 import gr.serafeim.web.dateToMillis
 import gr.serafeim.web.fromDateString
@@ -50,7 +51,7 @@ object SearchHolder {
     private val directory: Directory = FSDirectory.open(Paths.get("lucene_index"))
     private val reader: DirectoryReader = DirectoryReader.open(directory)
     private val indexSearcher = IndexSearcher(reader)
-    private val analyzer: Analyzer = GlobalsHolder.getAnalyzerInstance()
+    private val analyzer: Analyzer = ConfigHolder.getAnalyzerInstance()
 
     init {
         logger.info("Search Singleton class invoked.")

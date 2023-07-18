@@ -8,7 +8,7 @@ plugins {
 }
 
 application {
-    mainClass.set("io.ktor.server.netty.EngineMain")
+    mainClass.set("gr.serafeim.ApplicationKt")
 
 }
 
@@ -36,7 +36,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
 
     implementation("io.ktor:ktor-server-core:$ktor_version")
-    implementation("io.ktor:ktor-server-netty:$ktor_version")
+    implementation("io.ktor:ktor-server-jetty:$ktor_version")
     implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-pebble:$ktor_version")
@@ -52,7 +52,11 @@ dependencies {
     implementation("org.apache.lucene:lucene-analyzers-common:8.11.2")
     //implementation("org.apache.lucene:lucene-analyzers-common:$lucene_version")
 
+    implementation("com.github.ajalt.clikt:clikt:3.5.0")
+
+    implementation("com.sksamuel.hoplite:hoplite-core:2.7.0")
     implementation("org.mapdb:mapdb:3.0.9")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
 }
 
 tasks.test {
