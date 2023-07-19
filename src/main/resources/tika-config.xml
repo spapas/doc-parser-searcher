@@ -24,8 +24,9 @@
                 <param name="preserveInterwordSpacing" type="bool">false</param>
                 <param name="resize" type="int">200</param>
                 <param name="skipOcr" type="bool">false</param>
-
+                <!--
                 <param name="tesseractPath" type="string">c:/util/tesseract-ocr</param>
+                -->
                 <param name="timeoutSeconds" type="int">120</param>
             </params>
         </parser>
