@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87922cd0-d5d7-4701-ac16-55524a796988" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/env.bat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application.local.props.template" beforeDir="false" afterPath="$PROJECT_DIR$/application.local.props.template" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/conf/config.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/conf/config.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/cui.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/cui.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/db.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/db.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/parser/lucene_parser.kt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search/lucene_parser.kt.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search/tools.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/server.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/server.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/web/routes.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/web/routes.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.props" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.props" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +72,7 @@
       <recent name="C:\progr\kotlin\doc-parser-searcher\src\main\resources\templates" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\progr\kotlin\docparser\src\main\kotlin\gr\serafeim\search" />
       <recent name="C:\progr\kotlin\doc-parser-searcher\src\main\kotlin\gr\serafeim\conf" />
       <recent name="C:\progr\kotlin\doc-parser-searcher\src\main\kotlin\gr\serafeim\web" />
       <recent name="C:\progr\kotlin\doc-parser-searcher\src\main\kotlin\gr\serafeim\parser" />
@@ -114,6 +123,7 @@
       <workItem from="1671464006036" duration="10904000" />
       <workItem from="1671528784382" duration="7925000" />
       <workItem from="1672072075641" duration="11527000" />
+      <workItem from="1689750265844" duration="6561000" />
     </task>
     <servers />
   </component>
@@ -138,23 +148,23 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search.kt</url>
+          <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search/tools.kt</url>
           <line>81</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search.kt</url>
+          <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search/tools.kt</url>
           <line>61</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/web/routes.kt</url>
-          <line>54</line>
+          <line>52</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/parser/lucene_parser.kt.kt</url>
-          <line>52</line>
+          <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search/lucene_parser.kt.kt</url>
+          <line>53</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>

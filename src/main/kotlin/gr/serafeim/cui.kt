@@ -1,38 +1,66 @@
 package gr.serafeim
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.file
 import gr.serafeim.conf.ConfigHolder
-import gr.serafeim.parser.logger
+import gr.serafeim.search.Result
+import gr.serafeim.search.SearchHolder
+import gr.serafeim.search.parse
 import gr.serafeim.web.SearchParams
 
-class Main: CliktCommand() {
-    val configFile by option("-c", "--config", help="Config file").file()
-    val operation by argument("operation", help="What to run").choice("server", "clear", "index", "search")
-    //val search by argument(help="What to search for").optional()
-
+class Server(): CliktCommand() {
     override fun run() {
-        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "TRACE")
-        ConfigHolder.init(configFile)
-        println(ConfigHolder.config)
-        if(operation == "server") {
-            server()
-        } else if(operation == "clear") {
-            println("clear")
-        } else if(operation == "search") {
-            println("Search")
-            val sh = SearchHolder.search(SearchParams("do", 10, 1))
-            for(r: Result in sh.results) {
-                println(r.path)
-            }
+        server()
+    }
+}
 
-        } else if(operation == "index") {
-            println("Index")
+class Search(): CliktCommand() {
+    val search by argument(help="What to search for")
+    override fun run() {
+        println("Search")
+        val sh = SearchHolder.search(SearchParams(search, 10, 1))
+        if(sh.total == 0) {
+            println("Empty results")
+        }
+        for(r: Result in sh.results) {
+            println(r.path)
+
         }
     }
 }
 
-fun main(args: Array<String>) = Main().main(args)
+class Info(): CliktCommand() {
+    override fun run() {
+        println("Info")
+        println(ConfigHolder.config)
+
+    }
+}
+
+class Main: CliktCommand() {
+    val configFile by option("-c", "--config", help="Config file").file()
+    val loglevel by option("--loglevel", help="Log level (default=INFO)").choice("INFO", "DEBUG", "ERROR", "WARNING")
+    override fun run() {
+        ConfigHolder.init(configFile)
+        println("Main $loglevel")
+        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", loglevel?:"INFO")
+
+    }
+}
+
+class Parse(): CliktCommand() {
+    override fun run() {
+        val dir = ConfigHolder.config.parser.parseDirectory
+        println("Parsing, from directory $dir")
+        parse(dir)
+    }
+}
+
+
+fun main(args: Array<String>) = Main().subcommands(
+    Server(), Search(), Parse(), Info()
+).main(args)

@@ -1,17 +1,15 @@
 package gr.serafeim.web
 
 import gr.serafeim.*
+import gr.serafeim.search.Result
+import gr.serafeim.search.SearchHolder
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.pebble.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-import io.ktor.util.*
-import org.unbescape.html.HtmlEscape
-
 import mu.KotlinLogging
-import org.slf4j.LoggerFactory
 
 import java.io.File
 import java.util.*

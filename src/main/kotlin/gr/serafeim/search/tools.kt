@@ -1,4 +1,4 @@
-package gr.serafeim
+package gr.serafeim.search
 
 import gr.serafeim.conf.ConfigHolder
 import gr.serafeim.web.SearchParams
@@ -46,9 +46,13 @@ fun addDateQuery(bqb: BooleanQuery.Builder, dateFrom: Date?, dateTo: Date?, what
 
 }
 
+fun getLuceneDir(): Directory {
+    return FSDirectory.open(Paths.get(ConfigHolder.config.parser.dataDirectory, "lucene_index"))
+}
+
 object SearchHolder {
     private val logger: Logger = LoggerFactory.getLogger("Search")
-    private val directory: Directory = FSDirectory.open(Paths.get("lucene_index"))
+    private val directory: Directory = getLuceneDir()
     private val reader: DirectoryReader = DirectoryReader.open(directory)
     private val indexSearcher = IndexSearcher(reader)
     private val analyzer: Analyzer = ConfigHolder.getAnalyzerInstance()

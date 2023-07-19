@@ -21,7 +21,7 @@ fun server() {
     val adminUsername = config.server.adminUsername
     val adminPassword = config.server.adminPassword
 
-    gr.serafeim.parser.init(config.parser.directory, config.parser.interval)
+    gr.serafeim.search.init(config.parser.parseDirectory, config.parser.interval)
 
     embeddedServer(Jetty, port = config.server.port, host = config.server.host, watchPaths = listOf("classes", "resources")) {
         install(Pebble) {

@@ -1,4 +1,4 @@
-package gr.serafeim.parser
+package gr.serafeim.search
 
 import gr.serafeim.conf.ConfigHolder
 import gr.serafeim.DBHolder
@@ -26,6 +26,7 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.schedule
+import kotlin.io.path.absolutePathString
 
 
 val logger = LoggerFactory.getLogger("LuceneParser")
@@ -65,7 +66,7 @@ fun configureTika(): Tika {
 
 fun configureIndexWriter(): IndexWriter {
     //We open a File System directory as we want to store the index on our local file system.
-    val directory: Directory = FSDirectory.open(Paths.get("lucene_index"))
+    val directory: Directory = getLuceneDir()
 
     //The analyzer is used to perform analysis on text of documents and create the terms that will be added in the index.
     val analyzer: Analyzer = ConfigHolder.getAnalyzerInstance()
@@ -91,6 +92,7 @@ fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<
             content = tika.parseToString(it.absoluteFile)
             map[it.path] = Pair(true, modified)
         } catch (e: Exception) {
+            e.printStackTrace()
             logger.info("File ${it.path} cannot be parsed, skipping")
             map[it.path] = Pair(false, modified)
         }
@@ -124,7 +126,10 @@ fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<
 }
 
 fun parse(sdir: String) {
+
     logger.info("Parse START, extensions are ${ConfigHolder.config.parser.parseExtensions}")
+
+    logger.info("directory is ${Paths.get(sdir).absolutePathString()}")
 
     val tika = configureTika()
     val indexWriter = configureIndexWriter()

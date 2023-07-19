@@ -7,7 +7,8 @@ import org.slf4j.LoggerFactory
 import java.io.File
 
 
-data class Parser(val directory: String,
+data class Parser(val parseDirectory: String,
+                  val dataDirectory: String,
                   val interval: Int,
                   val pageSize: Int,
                   val parseExtensions: List<String>,
