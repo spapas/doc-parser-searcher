@@ -136,6 +136,12 @@ object SearchHolder {
 
         return Results(results = results, total = collector.totalHits)
     }
+
+
+
+    fun getTotalDocs(): Long {
+        val q =  MatchAllDocsQuery()
+        return indexSearcher.search(q, Int.MAX_VALUE).totalHits?.value?:0L
+
+    }
 }
-
-

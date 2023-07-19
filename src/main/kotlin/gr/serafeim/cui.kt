@@ -36,7 +36,11 @@ class Search(): CliktCommand() {
 class Info(): CliktCommand() {
     override fun run() {
         println("Info")
+        println("- Config")
         println(ConfigHolder.config)
+
+        println("- Number of docs on map ${DBHolder.map.keys.size}")
+        println("- Number of docs on index ${SearchHolder.getTotalDocs()}")
 
     }
 }
@@ -46,9 +50,7 @@ class Main: CliktCommand() {
     val loglevel by option("--loglevel", help="Log level (default=INFO)").choice("INFO", "DEBUG", "ERROR", "WARNING")
     override fun run() {
         ConfigHolder.init(configFile)
-        println("Main $loglevel")
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", loglevel?:"INFO")
-
     }
 }
 
