@@ -26,9 +26,9 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: docparser.jar
-          path: build/libs
+          path: build/libs/docparser-all.jar
       - uses: ncipollo/release-action@v1
         name: Publish Release
         with:
           token: ${{secrets.GITHUB_TOKEN}}
-          artifacts: docparser.jar
+          artifacts: build/libs/docparser-all.jar
