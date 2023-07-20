@@ -27,7 +27,7 @@ object ConfigHolder {
         val configLB = ConfigLoaderBuilder.default()
 
         if(f!=null) {
-            logger.info("Config with $f")
+            // logger.info("Config with $f")
             configLB.addFileSource(f, optional = false)
         }
 
@@ -36,8 +36,6 @@ object ConfigHolder {
             .build()
             .loadConfigOrThrow<Config>()
         analyzerClazz = Class.forName(config.parser.analyzerClazzString)
-        logger.info("Config ok!")
-        logger.info(config.toString())
 
     }
 
