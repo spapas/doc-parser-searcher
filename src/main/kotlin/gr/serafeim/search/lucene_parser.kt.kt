@@ -127,10 +127,8 @@ fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<
 }
 
 fun parse(sdir: String) {
-
     logger.info("Parse START, extensions are ${ConfigHolder.config.parser.parseExtensions}")
-
-    logger.info("directory is ${Paths.get(sdir).absolutePathString()}")
+    logger.info("Parse directory is ${Paths.get(sdir).absolutePathString()}")
 
     val tika = configureTika()
     val indexWriter = configureIndexWriter()
@@ -138,13 +136,16 @@ fun parse(sdir: String) {
     var uniquePaths = ConcurrentHashMap.newKeySet<String>()
 
     val dir = File(sdir)
-    val requestSemaphore = Semaphore(8)
+    val requestSemaphore = Semaphore(4)
     runBlocking {
         val jobs = mutableListOf<Job>()
         var totJobs = 0;
+        //logger.info("Run the blocking")
         dir.walk(direction = FileWalkDirection.TOP_DOWN).forEach {
+            //logger.info("Waqlking .. ${it.name}")
             if (!it.name.startsWith("~$")) {
                 if (ConfigHolder.config.parser.parseExtensions.contains(it.extension.lowercase())) {
+                    //logger.info("Parsing ${it.path}")
                     uniquePaths.add(it.path)
 
                     val job = GlobalScope.launch {
@@ -167,7 +168,7 @@ fun parse(sdir: String) {
 
     DBHolder.db.commit()
 
-    println("Docs Indexed Successfully!")
+    logger.info("Docs Indexed Successfully!")
     indexWriter.close()
 }
 
@@ -179,7 +180,7 @@ private fun clearDeleted(
     val existingPathsSet = map.map { it.key }.toSet()
     val uniquePathsSet = uniquePaths.toSet()
     val remaining = existingPathsSet.minus(uniquePathsSet)
-    println("Remaining ${remaining}")
+    logger.debug("Clear deleted, remaining ${remaining}")
     remaining.forEach {
         map.remove(it)
         val idTerm = Term("id", it)

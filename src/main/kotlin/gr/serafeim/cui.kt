@@ -9,8 +9,13 @@ import com.github.ajalt.clikt.parameters.types.file
 import gr.serafeim.conf.ConfigHolder
 import gr.serafeim.search.Result
 import gr.serafeim.search.SearchHolder
+import gr.serafeim.search.getLuceneDirName
 import gr.serafeim.search.parse
 import gr.serafeim.web.SearchParams
+import org.apache.lucene.index.IndexNotFoundException
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
 
 class Server(): CliktCommand() {
     override fun run() {
@@ -40,17 +45,22 @@ class Info(): CliktCommand() {
         println(ConfigHolder.config)
 
         println("- Number of docs on map ${DBHolder.map.keys.size}")
-        println("- Number of docs on index ${SearchHolder.getTotalDocs()}")
+        try {
+            val sh = SearchHolder.getTotalDocs()
+            println("- Number of docs on index $sh")
+        } catch (e: Throwable) {
+            println("- No lucene index")
+        }
 
     }
 }
 
 class Main: CliktCommand() {
     val configFile by option("-c", "--config", help="Config file").file()
-    val loglevel by option("--loglevel", help="Log level (default=INFO)").choice("INFO", "DEBUG", "ERROR", "WARNING")
+
     override fun run() {
         ConfigHolder.init(configFile)
-        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", loglevel?:"INFO")
+
     }
 }
 
@@ -62,7 +72,20 @@ class Parse(): CliktCommand() {
     }
 }
 
+class Clear(): CliktCommand() {
+    override fun run() {
+        val dir = ConfigHolder.config.parser.dataDirectory
+        println("Clearing data from directory $dir")
+        DBHolder.map.clear()
+        DBHolder.db.commit()
+        val luceneDirName = getLuceneDirName()
+        Files.walk(luceneDirName)
+            .sorted(Comparator.reverseOrder())
+            .map(Path::toFile)
+            .forEach(File::delete);
+    }
+}
 
 fun main(args: Array<String>) = Main().subcommands(
-    Server(), Search(), Parse(), Info()
+    Server(), Search(), Parse(), Info(), Clear()
 ).main(args)

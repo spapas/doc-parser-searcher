@@ -6,30 +6,30 @@
             <!-- this is not formally necessary, but prevents loading of unnecessary parser -->
             <parser-exclude class="org.apache.tika.parser.ocr.TesseractOCRParser"/>
         </parser>
+        <!--
+                <parser class="org.apache.tika.parser.ocr.TesseractOCRParser">
+                    <params>
+                        <param name="applyRotation" type="bool">false</param>
+                        <param name="colorSpace" type="string">gray</param>
+                        <param name="density" type="int">300</param>
+                        <param name="depth" type="int">4</param>
+                        <param name="enableImagePreprocessing" type="bool">false</param>
+                        <param name="filter" type="string">triangle</param>
 
-        <parser class="org.apache.tika.parser.ocr.TesseractOCRParser">
-            <params>
-                <param name="applyRotation" type="bool">false</param>
-                <param name="colorSpace" type="string">gray</param>
-                <param name="density" type="int">300</param>
-                <param name="depth" type="int">4</param>
-                <param name="enableImagePreprocessing" type="bool">false</param>
-                <param name="filter" type="string">triangle</param>
+                        <param name="language" type="string">ell</param>
+                        <param name="maxFileSizeToOcr" type="long">2147483647</param>
+                        <param name="minFileSizeToOcr" type="long">0</param>
+                        <param name="pageSegMode" type="string">1</param>
+                        <param name="pageSeparator" type="string"></param>
+                        <param name="preserveInterwordSpacing" type="bool">false</param>
+                        <param name="resize" type="int">200</param>
+                        <param name="skipOcr" type="bool">false</param>
 
-                <param name="language" type="string">ell</param>
-                <param name="maxFileSizeToOcr" type="long">2147483647</param>
-                <param name="minFileSizeToOcr" type="long">0</param>
-                <param name="pageSegMode" type="string">1</param>
-                <param name="pageSeparator" type="string"></param>
-                <param name="preserveInterwordSpacing" type="bool">false</param>
-                <param name="resize" type="int">200</param>
-                <param name="skipOcr" type="bool">false</param>
-                <!--
-                <param name="tesseractPath" type="string">c:/util/tesseract-ocr</param>
-                -->
+                        <param name="tesseractPath" type="string">c:/util/tesseract-ocr</param>
+
                 <param name="timeoutSeconds" type="int">120</param>
             </params>
         </parser>
-
+-->
     </parsers>
 </properties>

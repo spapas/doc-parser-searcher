@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="87922cd0-d5d7-4701-ac16-55524a796988" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/cui.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/cui.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/db.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/db.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search/lucene_parser.kt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search/lucene_parser.kt.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search/tools.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search/tools.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/tika-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tika-config.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,23 +44,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1689676174771&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/progr/kotlin/doc-parser-searcher/src/main/kotlin/gr/serafeim&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "ktor.last.update.timestamp": "1689840425345",
+    "last_opened_file_path": "C:/progr/kotlin/doc-parser-searcher/src/main/kotlin/gr/serafeim",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\progr\kotlin\docparser\src\main\resources" />
@@ -114,6 +119,9 @@
       <workItem from="1671528784382" duration="7925000" />
       <workItem from="1672072075641" duration="11527000" />
       <workItem from="1689750265844" duration="10462000" />
+      <workItem from="1689832855327" duration="344000" />
+      <workItem from="1689833756406" duration="307000" />
+      <workItem from="1689835000985" duration="5991000" />
     </task>
     <servers />
   </component>
@@ -137,16 +145,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search/tools.kt</url>
-          <line>81</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/search/tools.kt</url>
-          <line>61</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/gr/serafeim/web/routes.kt</url>
           <line>52</line>

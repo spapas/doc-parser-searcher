@@ -19,6 +19,7 @@ import org.apache.lucene.store.Directory
 import org.apache.lucene.store.FSDirectory
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
 
@@ -43,11 +44,14 @@ fun addDateQuery(bqb: BooleanQuery.Builder, dateFrom: Date?, dateTo: Date?, what
         val query3: Query = LongPoint.newRangeQuery(what, fromMillis, toMillis)
         bqb.add(query3, BooleanClause.Occur.FILTER)
     }
+}
 
+fun getLuceneDirName(): Path {
+    return Paths.get(ConfigHolder.config.parser.dataDirectory, "lucene_index")
 }
 
 fun getLuceneDir(): Directory {
-    return FSDirectory.open(Paths.get(ConfigHolder.config.parser.dataDirectory, "lucene_index"))
+    return FSDirectory.open(getLuceneDirName())
 }
 
 object SearchHolder {
@@ -133,15 +137,11 @@ object SearchHolder {
                 created = created
             )
         }
-
         return Results(results = results, total = collector.totalHits)
     }
-
-
 
     fun getTotalDocs(): Long {
         val q =  MatchAllDocsQuery()
         return indexSearcher.search(q, Int.MAX_VALUE).totalHits?.value?:0L
-
     }
 }
