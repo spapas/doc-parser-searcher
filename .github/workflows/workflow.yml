@@ -22,5 +22,5 @@ jobs:
           arguments: shadowJar
       - uses: actions/upload-artifact@v3
         with:
-          name: Package
+          name: docparser.jar
           path: build/libs
