@@ -31,4 +31,4 @@ jobs:
         name: Publish Release
         with:
           token: ${{secrets.GITHUB_TOKEN}}
-          artifacts: "docparser.jar"
+          artifacts: docparser.jar
