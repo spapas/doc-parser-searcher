@@ -9,8 +9,6 @@ import io.ktor.server.pebble.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-import mu.KotlinLogging
-
 import java.io.File
 import java.util.*
 import java.net.URLEncoder;
@@ -29,12 +27,8 @@ data class SearchParams(
     val accessedTo: Date? = null
 )
 
-val logger = KotlinLogging.logger {}
-
 fun Route.listKeysRoute() {
     get("/keys") {
-        logger.info("Hi from /keys")
-
         val map = DBHolder.map
         call.respond(
             PebbleContent(
@@ -49,7 +43,6 @@ fun Route.listKeysRoute() {
 
 fun Route.downloadFile() {
     get("/download") {
-        logger.info("Hi from /download")
         val path = call.request.queryParameters.get("path") ?: ""
         println(path)
         val map = DBHolder.map
@@ -68,8 +61,6 @@ fun Route.downloadFile() {
 fun Route.index(pageSize: Int) {
 
     get("/") {
-
-        logger.info("Hi from /")
         val q = call.request.queryParameters.get("query") ?: ""
         val p = call.request.queryParameters.get("page")?.toInt() ?: 1
         val path = call.request.queryParameters.get("path") ?: ""
@@ -90,7 +81,6 @@ fun Route.index(pageSize: Int) {
         var total = 0
         var results = listOf<Result>()
         if (q != "") {
-            logger.info("Searching for: $q")
             val sp = SearchParams(
                 q = q,
                 p = p,
@@ -112,7 +102,7 @@ fun Route.index(pageSize: Int) {
                 val endTime = System.nanoTime()
                 totalTime = endTime - startTime
             } catch (e: org.apache.lucene.queryparser.classic.ParseException) {
-                logger.info("Error while trying to parse the query")
+                e.printStackTrace()
             }
         }
         call.request

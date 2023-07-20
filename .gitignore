@@ -45,3 +45,5 @@ lucene_index/*
 map.db
 map.db.wal*
 *.local.props
+logs*
+*.log

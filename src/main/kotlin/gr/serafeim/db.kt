@@ -1,9 +1,9 @@
 package gr.serafeim
 
 import gr.serafeim.conf.ConfigHolder
-import mu.KotlinLogging
 import org.mapdb.DBMaker
 import org.mapdb.Serializer
+import org.slf4j.LoggerFactory
 import java.nio.file.Paths
 
 
@@ -14,9 +14,8 @@ fun getFileDB(): DBMaker.Maker {
 }
 
 object DBHolder {
-    val logger = KotlinLogging.logger {}
+    val logger = LoggerFactory.getLogger("DBHolder")
     val db = getFileDB().transactionEnable().make()
-    
     val map = db.hashMap("docs").keySerializer(Serializer.STRING).valueSerializer(Serializer.JAVA).createOrOpen()
 
     init {

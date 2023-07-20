@@ -9,10 +9,10 @@ import io.ktor.server.jetty.*
 import io.ktor.server.pebble.*
 import io.ktor.server.routing.*
 import io.pebbletemplates.pebble.loader.ClasspathLoader
-import mu.KotlinLogging
+import org.slf4j.LoggerFactory
 
 fun server() {
-    val logger = KotlinLogging.logger {}
+    val logger = LoggerFactory.getLogger("server")
     logger.info("Starting server...")
     val config = ConfigHolder.config
 

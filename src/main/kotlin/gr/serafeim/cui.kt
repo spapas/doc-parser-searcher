@@ -4,7 +4,6 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.option
-import com.github.ajalt.clikt.parameters.types.choice
 import com.github.ajalt.clikt.parameters.types.file
 import gr.serafeim.conf.ConfigHolder
 import gr.serafeim.search.Result
@@ -12,7 +11,6 @@ import gr.serafeim.search.SearchHolder
 import gr.serafeim.search.getLuceneDirName
 import gr.serafeim.search.parse
 import gr.serafeim.web.SearchParams
-import org.apache.lucene.index.IndexNotFoundException
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path

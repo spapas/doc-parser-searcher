@@ -86,8 +86,11 @@ fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<
 
     val existingModTime: Pair<Boolean, Long>? = (map[it.path] as Pair<Boolean, Long>?)
     logger.debug("Existing mod time is $existingModTime and current mod time is $modified")
+    print("Parsing ${it.name}\r")
+
     if(existingModTime==null || existingModTime.second < modified) {
         logger.debug("Need to parse and index ${it.name}")
+
         var content: String? = null;
         try {
             content = tika.parseToString(it.absoluteFile)
@@ -155,6 +158,7 @@ fun parse(sdir: String) {
                             parseDocument(it, indexWriter, tika, DBHolder.map)
                             totJobs -= 1
                             logger.debug("End job, $totJobs")
+
                         }
                     }
                     jobs.add(job)

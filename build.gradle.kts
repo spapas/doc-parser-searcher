@@ -33,8 +33,15 @@ dependencies {
     implementation("org.apache.tika:tika-parsers-standard-package:$tika_version")
 
     implementation("org.apache.logging.log4j:log4j-core:2.20.0")
+    //implementation("org.apache.logging.log4j:log4j-api:2.20.0")
+    //implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.20.0")
+
     implementation("org.slf4j:slf4j-api:2.0.7")
-    implementation("org.slf4j:slf4j-simple:2.0.7")
+    implementation("org.slf4j:slf4j-log4j12:2.0.7")
+
+
+    // implementation("org.slf4j:slf4j-simple:2.0.7")
+
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
 
@@ -59,7 +66,6 @@ dependencies {
 
     implementation("com.sksamuel.hoplite:hoplite-core:2.7.4")
     implementation("org.mapdb:mapdb:3.0.9")
-    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
 }
 
 tasks.test {

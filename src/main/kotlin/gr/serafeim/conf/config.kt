@@ -1,7 +1,6 @@
 package gr.serafeim.conf
 
 import com.sksamuel.hoplite.*
-import mu.KotlinLogging
 import org.apache.lucene.analysis.Analyzer
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -19,7 +18,7 @@ data class Config(val env: String, val parser: Parser, val server: Server)
 
 
 object ConfigHolder {
-    val logger = KotlinLogging.logger {}
+    val logger = LoggerFactory.getLogger("ConfigHolder")
     private lateinit var analyzerClazz: Class<*>
     lateinit var config: Config
 
