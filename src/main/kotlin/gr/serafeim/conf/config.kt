@@ -14,7 +14,7 @@ data class Parser(val parseDirectory: String,
                   val analyzerClazzString: String,
                   val externalTikaConfig: String?)
 data class Server(val host: String, val port: Int, val userUsername: String, val userPassword: String, val adminUsername: String, val adminPassword: String)
-data class Config(val env: String, val parser: Parser, val server: Server)
+data class Config(val parser: Parser, val server: Server)
 
 
 object ConfigHolder {

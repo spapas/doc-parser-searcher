@@ -20,7 +20,5 @@ object DBHolder {
 
     init {
         logger.info("DB Singleton class invoked.")
-
     }
-
 }
