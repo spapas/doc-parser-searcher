@@ -41,6 +41,20 @@ fun Route.listKeysRoute() {
     }
 }
 
+fun Route.statusRoute() {
+    get("/status") {
+        val map = DBHolder.map
+        call.respond(
+            PebbleContent(
+                "status.html", mapOf(
+                    "keySize" to map.keys.size,
+                    "parsing" to StateHolder.parsing
+                )
+            )
+        )
+    }
+}
+
 fun Route.downloadFile() {
     get("/download") {
         val path = call.request.queryParameters.get("path") ?: ""

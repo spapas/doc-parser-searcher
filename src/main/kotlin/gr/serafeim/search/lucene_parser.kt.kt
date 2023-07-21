@@ -2,6 +2,7 @@ package gr.serafeim.search
 
 import gr.serafeim.conf.ConfigHolder
 import gr.serafeim.DBHolder
+import gr.serafeim.StateHolder
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
@@ -132,6 +133,7 @@ fun parseDocument(it: File, indexWriter: IndexWriter, tika: Tika, map: HTreeMap<
 fun parse(sdir: String) {
     logger.info("Parse START, extensions are ${ConfigHolder.config.parser.parseExtensions}")
     logger.info("Parse directory is ${Paths.get(sdir).absolutePathString()}")
+    StateHolder.parsing = true
 
     val tika = configureTika()
     val indexWriter = configureIndexWriter()
@@ -174,6 +176,7 @@ fun parse(sdir: String) {
 
     logger.info("Docs Indexed Successfully!")
     indexWriter.close()
+    StateHolder.parsing = false
 }
 
 private fun clearDeleted(

@@ -11,6 +11,11 @@ import io.ktor.server.routing.*
 import io.pebbletemplates.pebble.loader.ClasspathLoader
 import org.slf4j.LoggerFactory
 
+
+object StateHolder {
+    var parsing = false
+}
+
 fun server() {
     val logger = LoggerFactory.getLogger("server")
     logger.info("Starting server...")
@@ -68,9 +73,11 @@ fun server() {
             if (adminUsername != "" && adminPassword != "") {
                 authenticate("auth-basic-admin") {
                     listKeysRoute()
+                    statusRoute()
                 }
             } else {
                 listKeysRoute()
+                statusRoute()
             }
         }
     }.start(wait = true)

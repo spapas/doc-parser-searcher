@@ -58,9 +58,8 @@ dependencies {
     implementation("org.apache.lucene:lucene-queryparser:$lucene_version")
     implementation("org.apache.lucene:lucene-highlighter:$lucene_version")
     implementation("org.apache.lucene:lucene-backward-codecs:$lucene_version")
+    implementation("org.apache.lucene:lucene-analysis-common:$lucene_version")
 
-    implementation("org.apache.lucene:lucene-analyzers-common:8.11.2")
-    //implementation("org.apache.lucene:lucene-analyzers-common:$lucene_version")
 
     implementation("com.github.ajalt.clikt:clikt:4.1.0")
 
