@@ -7,7 +7,10 @@ This tool combines two great java libraries to help you index and then very fast
 * apache lucene (https://lucene.apache.org/) for searching text
 * apache tika (https://tika.apache.org/) for extracting text from various types of files
 
-The app 
+## Screenshot
+
+![image](https://github.com/spapas/doc-parser-searcher/assets/3911074/c5a18c9e-3ab5-4a7a-8c93-1ad37cd26353)
+
 
 ## Usage
 
