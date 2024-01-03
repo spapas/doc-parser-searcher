@@ -22,9 +22,9 @@ repositories {
     mavenCentral()
 }
 
-val ktor_version = "2.3.2"
-val tika_version = "2.8.0"
-val lucene_version = "9.7.0"
+val ktor_version = "2.3.7"
+val tika_version = "2.9.1"
+val lucene_version = "9.9.1"
 
 dependencies {
     testImplementation(kotlin("test"))
@@ -59,12 +59,12 @@ dependencies {
     implementation("org.apache.lucene:lucene-highlighter:$lucene_version")
     implementation("org.apache.lucene:lucene-backward-codecs:$lucene_version")
     implementation("org.apache.lucene:lucene-analysis-common:$lucene_version")
+    implementation("org.apache.lucene:lucene-memory:$lucene_version")
 
+    implementation("com.github.ajalt.clikt:clikt:4.2.1")
 
-    implementation("com.github.ajalt.clikt:clikt:4.1.0")
-
-    implementation("com.sksamuel.hoplite:hoplite-core:2.7.4")
-    implementation("org.mapdb:mapdb:3.0.9")
+    implementation("com.sksamuel.hoplite:hoplite-core:2.7.5")
+    implementation("org.mapdb:mapdb:3.0.10")
 }
 
 tasks.test {

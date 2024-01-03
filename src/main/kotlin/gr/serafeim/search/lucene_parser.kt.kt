@@ -7,7 +7,9 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import org.apache.lucene.analysis.Analyzer
+import org.apache.lucene.backward_codecs.lucene95.Lucene95Codec
 import org.apache.lucene.codecs.PostingsFormat
+import org.apache.lucene.codecs.lucene99.Lucene99Codec
 import org.apache.lucene.document.*
 import org.apache.lucene.index.IndexReader
 import org.apache.lucene.index.IndexWriter
@@ -35,9 +37,11 @@ val logger = LoggerFactory.getLogger("LuceneParser")
 
 fun init(directory: String, interval: Int) {
     val x =  PostingsFormat.availablePostingsFormats()
-    if(!x.contains("Lucene90")) {
-        throw Exception("Lucene90 Not found!")
+    if(!x.contains("Lucene99")) {
+        throw Exception("Lucene99 Not found!")
     }
+    val codec = Lucene99Codec()
+    println(codec)
 
     logger.info("Lucene parser init, directory: $directory, interval: $interval minutes")
     Timer("Parser").schedule(
