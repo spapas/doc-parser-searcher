@@ -112,5 +112,6 @@ This shouldn't be needed anymore.
 
 ## Changelog
 
+- v1.2: Update dependencies
 - v1.1: First public version
 - 

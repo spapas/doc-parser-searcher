@@ -5,9 +5,9 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     application
-    kotlin("jvm") version "1.9.0"
-    id("io.ktor.plugin") version "2.3.2"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    kotlin("jvm") version "2.0.10"
+    id("io.ktor.plugin") version "2.3.12"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 application {
@@ -22,9 +22,9 @@ repositories {
     mavenCentral()
 }
 
-val ktor_version = "2.3.7"
-val tika_version = "2.9.1"
-val lucene_version = "9.9.1"
+val ktor_version = "2.3.12"
+val tika_version = "2.9.2"
+val lucene_version = "9.11.1"
 
 dependencies {
     testImplementation(kotlin("test"))
@@ -32,18 +32,11 @@ dependencies {
     implementation("org.apache.tika:tika-parsers:$tika_version")
     implementation("org.apache.tika:tika-parsers-standard-package:$tika_version")
 
-    implementation("org.apache.logging.log4j:log4j-core:2.20.0")
-    //implementation("org.apache.logging.log4j:log4j-api:2.20.0")
-    //implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.20.0")
+    implementation("org.apache.logging.log4j:log4j-core:2.23.1")
+    implementation("org.slf4j:slf4j-api:2.0.14")
+    implementation("org.slf4j:slf4j-log4j12:2.0.14")
 
-    implementation("org.slf4j:slf4j-api:2.0.7")
-    implementation("org.slf4j:slf4j-log4j12:2.0.7")
-
-
-    // implementation("org.slf4j:slf4j-simple:2.0.7")
-
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 
     implementation("io.ktor:ktor-server-core:$ktor_version")
     implementation("io.ktor:ktor-server-jetty:$ktor_version")
@@ -61,10 +54,10 @@ dependencies {
     implementation("org.apache.lucene:lucene-analysis-common:$lucene_version")
     implementation("org.apache.lucene:lucene-memory:$lucene_version")
 
-    implementation("com.github.ajalt.clikt:clikt:4.2.1")
+    implementation("com.github.ajalt.clikt:clikt:4.4.0")
 
     implementation("com.sksamuel.hoplite:hoplite-core:2.7.5")
-    implementation("org.mapdb:mapdb:3.0.10")
+    implementation("org.mapdb:mapdb:3.1.0")
 }
 
 tasks.test {
@@ -72,7 +65,7 @@ tasks.test {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "14"
+    kotlinOptions.jvmTarget = "18"
 }
 
 
