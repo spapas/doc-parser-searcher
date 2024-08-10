@@ -128,7 +128,7 @@ object SearchHolder {
             val htext = highlighter.getBestFragment(analyzer, "text", text)?:text;
             Result(
                 id = id,
-                text = htext,
+                text = htext.take(10*1024),
                 hfragments = fragments.toList(),
                 name = name,
                 path = path,
