@@ -64,10 +64,12 @@ fun server() {
             if (userUsername != "" && userPassword != "") {
                 authenticate("auth-basic-user") {
                     index(config.parser.pageSize)
+                    aboutRoute()
                     downloadFile()
                 }
             } else {
                 index(config.parser.pageSize)
+                aboutRoute()
                 downloadFile()
             }
             if (adminUsername != "" && adminPassword != "") {

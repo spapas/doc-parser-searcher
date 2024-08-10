@@ -128,6 +128,10 @@ This shouldn't be needed anymore.
 
 ## Changelog
 
+- v1.3: Improve project docs and styling
 - v1.2: Update dependencies
 - v1.1: First public version
  
+## About
+If you find this project useful, consider
+<a href="https://buymeacoffee.com/spapas">buying me a coffee</a>!

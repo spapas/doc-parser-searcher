@@ -67,6 +67,20 @@ fun Route.statusRoute() {
     }
 }
 
+
+fun Route.aboutRoute() {
+    get("/about") {
+
+        val map = DBHolder.map
+        call.respond(
+            PebbleContent(
+                "about.html", mapOf(
+                )
+            )
+        )
+    }
+}
+
 fun Route.downloadFile() {
     get("/download") {
         val path = call.request.queryParameters.get("path") ?: ""
