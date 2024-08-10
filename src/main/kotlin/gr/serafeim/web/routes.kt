@@ -1,6 +1,7 @@
 package gr.serafeim.web
 
 import gr.serafeim.*
+import gr.serafeim.conf.ConfigHolder
 import gr.serafeim.search.Result
 import gr.serafeim.search.SearchHolder
 import io.ktor.http.*
@@ -28,13 +29,22 @@ data class SearchParams(
 )
 
 fun Route.listKeysRoute() {
-    get("/keys") {
-        val map = DBHolder.map
+    get("/docs") {
+        val docsmap = DBHolder.map
+        val q = call.request.queryParameters.get("query") ?: ""
+        val p = call.request.queryParameters.get("page")?.toInt() ?: 1
+        val psize = call.request.queryParameters.get("page_size")?.toInt() ?: 10
+        val docs = if (q != "") docsmap.filter { q in it.key } else docsmap
+
         call.respond(
             PebbleContent(
-                "keys.html", mapOf(
-                    "keys" to map.map { Pair(it.key, it.value)},
-                    "keySize" to map.keys.size,
+                "docs.html", mapOf(
+                    "docs" to docs.map { Pair(it.key, it.value) }.drop(psize * (p - 1)).take(psize),
+                    "docSize" to docsmap.keys.size,
+                    "q" to q,
+                    "page" to p,
+                    "next_page" to nextPage(call.request, p.toInt(), psize, docsmap.keys.size),
+                    "prev_page" to prevPage(call.request, p.toInt())
                 )
             )
         )
@@ -43,12 +53,14 @@ fun Route.listKeysRoute() {
 
 fun Route.statusRoute() {
     get("/status") {
+
         val map = DBHolder.map
         call.respond(
             PebbleContent(
                 "status.html", mapOf(
                     "keySize" to map.keys.size,
-                    "parsing" to StateHolder.parsing
+                    "parsing" to StateHolder.parsing,
+                    "config" to ConfigHolder.config
                 )
             )
         )
@@ -62,7 +74,10 @@ fun Route.downloadFile() {
         val map = DBHolder.map
         if (path in map.keys) {
             val file = File(path)
-            val cdVal = ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, URLEncoder.encode(file.name))
+            val cdVal = ContentDisposition.Attachment.withParameter(
+                ContentDisposition.Parameters.FileName,
+                URLEncoder.encode(file.name)
+            )
             call.response.header(
                 HttpHeaders.ContentDisposition,
                 cdVal.toString()
@@ -128,8 +143,12 @@ fun Route.index(pageSize: Int) {
                     "q" to q,
                     "page" to p,
                     "totalTime" to totalTime,
-                    "showingFrom" to pageSize * (p-1) + 1,
-                    "showingTo" to if (pageSize * p < total) { pageSize * p} else { total },
+                    "showingFrom" to pageSize * (p - 1) + 1,
+                    "showingTo" to if (pageSize * p < total) {
+                        pageSize * p
+                    } else {
+                        total
+                    },
                     "created_from" to createdFromStr,
                     "created_to" to createdToStr,
                     "modified_from" to modifiedFromStr,

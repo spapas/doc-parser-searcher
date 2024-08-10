@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>List of docs</h1>
+
+    Size: {{ docSize }}
+<form method="GET" action="" class="">
+    <div class="row row-cols-lg-auto g-3 align-items-center">
+        <div class="col-12">
+            <label class="" for="query">Search for</label>
+            <input id='query' class="form-control form-control-sm" value="{{q}}" type="text" name="query" placeholder="">
+        </div>
+    </div>
+    <input type="submit" class="btn btn-primary" value="Search">
+    <a href="/docs" class="btn btn-info" >Clear</a>
+</form>
+    <br />
+    <table class="table">
+        <tr>
+            <th>Filename</th>
+            <th>OK?</th>
+            <th>Mod Date</th>
+        </tr>
+        {% for k in docs %}
+        <tr>
+        <td>{{ k.first }}</td>
+        <td>{{ k.second.first }}</td>
+        <td>{{ k.second.second }}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+
+<nav aria-label="Pagination">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="{{ prev_page }}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">{{ page }}</a></li>
+        <li class="page-item"><a class="page-link" href="{{ next_page }}">Next</a></li>
+    </ul>
+</nav>
+
+    <a href="/" class="btn btn-info">Back</a>
+
+
+{% endblock %}}

@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="87922cd0-d5d7-4701-ac16-55524a796988" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env.bat" beforeDir="false" afterPath="$PROJECT_DIR$/env.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/web/routes.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gr/serafeim/web/routes.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/keys.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/docs.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/status.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/status.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,31 +66,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Gradle.Build doc-parser-searcher.executor": "Run",
-    "Kotlin.CuiKt.executor": "Run",
-    "Ktor.CuiKt.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "ktor.last.update.timestamp": "1689840425345",
-    "last_opened_file_path": "C:/progr/kotlin/doc-parser-searcher",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "build.tools",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Gradle.Build doc-parser-searcher.executor&quot;: &quot;Run&quot;,
+    &quot;Kotlin.CuiKt.executor&quot;: &quot;Run&quot;,
+    &quot;Ktor.CuiKt.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;ktor.last.update.timestamp&quot;: &quot;1689840425345&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/progr/kotlin/doc-parser-searcher&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;build.tools&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\progr\kotlin\docparser\src\main\resources" />
@@ -100,27 +104,17 @@
       <recent name="C:\progr\kotlin\doc-parser-searcher\src\main\kotlin\gr\serafeim" />
     </key>
   </component>
-  <component name="RunManager" selected="Ktor.CuiKt">
-    <configuration name="CuiKt" type="JetRunConfigurationType" temporary="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="18" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="MAIN_CLASS_NAME" value="gr.serafeim.CuiKt" />
-      <option name="PROGRAM_PARAMETERS" value="info" />
-      <shortenClasspath name="NONE" />
-      <option name="VM_PARAMETERS" value="-Dio.ktor.development=true" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager">
     <configuration name="CuiKt" type="KtorApplicationConfigurationType" factoryName="Ktor" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="gr.serafeim.CuiKt" />
       <module name="docparser.main" />
+      <option name="PROGRAM_PARAMETERS" value="-c C:\progr\kotlin\doc-parser-searcher\build\libs\application.local.props server" />
       <option name="alternativeJrePath" />
       <option name="alternativeJrePathEnabled" value="false" />
       <option name="includeProvidedScope" value="false" />
       <option name="mainClass" value="gr.serafeim.CuiKt" />
       <option name="passParentEnvs" value="true" />
-      <option name="programParameters" value="" />
+      <option name="programParameters" value="-c C:\progr\kotlin\doc-parser-searcher\build\libs\application.local.props server" />
       <option name="shortenCommandLine" />
       <option name="vmParameters" />
       <option name="workingDirectory" value="C:\progr\kotlin\doc-parser-searcher" />
@@ -128,15 +122,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <list>
-      <item itemvalue="Kotlin.CuiKt" />
-      <item itemvalue="Ktor.CuiKt" />
-    </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Kotlin.CuiKt" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -177,7 +162,9 @@
       <workItem from="1689835000985" duration="15413000" />
       <workItem from="1723152801377" duration="1321000" />
       <workItem from="1723154182659" duration="412000" />
-      <workItem from="1723154614805" duration="1134000" />
+      <workItem from="1723154614805" duration="1383000" />
+      <workItem from="1723238940729" duration="2928000" />
+      <workItem from="1723290768862" duration="1572000" />
     </task>
     <servers />
   </component>
