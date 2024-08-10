@@ -8,7 +8,7 @@ This tool combines two great java libraries to help you index and then very fast
 * apache tika (https://tika.apache.org/) for extracting text from various types of files
 
 With this tool you can select a folder which contains all your documents.
-These documents will then be parsed and you'll be able to search their contents. 
+These documents will then be parsed, and you'll be able to search their contents. 
 
 ## Screenshot
 
@@ -16,16 +16,16 @@ These documents will then be parsed and you'll be able to search their contents.
 
 ## Requirements
 
-You need java 14 to run this program.
+You need java 18 to run this program.
 
 ## Usage
 
 To run this download the `docparser-all.jar` from the 
-[github releases](https://github.com/spapas/doc-parser-searcher/releases).
-You can then run it with java using something like 
+[github releases](https://github.com/spapas/doc-parser-searcher/releases)
+and run it with java using something like 
 
 ```
-java -jar docparser-all.jar
+java -jar docparser-all.jar 
 ```
 
 You need to pass a parameter to the program to indicate its mode of operation:
@@ -59,16 +59,19 @@ server.adminUsername= # Enables HTTP basic auth for admins if set
 server.adminPassword= # Enables HTTP basic auth for admins if set
 ```
 
-Right now the admin doesn't have much functionality, it just allows connecting to
-to /status to see the status of the server and 
-/keys to be able to see all the files that are indexed. 
+Right now the admin doesn't have much functionality. Beyond
+searching, it allows connecting to:
 
-To override the configuration you can create an 
-`application.props` file with the settings you need to override
-and then pass it to the app using `-c` for 
-example:
+* /status to see the status of the server and 
+* /docs to be able to see all the files that are indexed. 
 
-`java -jar docparser-all.jar -c application.local.props server`
+To override the configuration you can copy over the
+[application.local.props.template](https://github.com/spapas/doc-parser-searcher/blob/master/application.local.props.template)
+to the same folder as the jar as `application.props` and edit it according to your needs.
+
+Then pass it to the app using `-c`, for example:
+
+`java -jar docparser-all.jar -c application.props server`
 
 If you use the default configuration it will parse from the directory
 you start the program from and keep its data to that directory.
@@ -89,20 +92,33 @@ i.e for english use  `org.apache.lucene.analysis.en.EnglishAnalyzer`
 
 When the file parser sees a file it keeps its pathname and last modified date on a (persistant)
 hashmap. This way the file won't need to be re-indexed if it hasn't been changed. You can observe this behavior
-by running `parse`: The first time it will take a lot of time to index everything but if you re-run it 
-it should be much faster (notice it will need *some* time because it has to walk all files).
+by running `parse`: The first time it will take a lot of time to index everything but if you re-run 
+it should be much faster (notice it will need *some* time because it has to walk all files, if there are
+a lot of files it will need a lot of time even if nothing has changed).
 
-The application generates a `lucene_index` directory where there search 
-index is saved and a map.db (and map.db.wal.*) to keep the persistant hasmap (it
-uses [mapdb](https://mapdb.org/) for this).
+The application generates a `lucene_index` directory where the search 
+index is saved and a `map.db` (and map.db.wal.*) file to keep the 
+persistent hashmap (it uses the [mapdb](https://mapdb.org/) library for this).
 
 ## Example
 
 Indexing the docs of my organization(> 100k pdf/doc/xls etc files) takes a couple of hours and creates an index of ~ 1 GB. 
 Then depending on the query results are returned in 100 ms to 1 second.  
 
+## The OCR situation
 
-## Changes to fat.jar
+The apache tika library allows you to use [tesseract OCR](https://github.com/tesseract-ocr/tesseract)
+to read some files. You need to install tesseract to your server and then use a 
+custom tika.config.xml by passing the `parser.externalTikaConfig` setting to 
+your application.props. For example `parser.externalTikaConfig=c:\\progr\\kotlin\\doc-parser-searcher\\tika-config.xml`.
+One sample tika config that uses tesseract can be found [here](https://github.com/spapas/doc-parser-searcher/blob/master/tika-config-ocr.xml).
+
+*Warning*: Using the OCR is very slow. I have mainly included to test the functionality, I don't think that this is useful
+in a lot of situations. Of course, you are free to use it if you need it. Finally, you need to properly set the language of the
+documents you'll OCR or else your results will be very bad (using `<param name="language" type="string">ell</param>`).
+
+
+### Changes to fat.jar
 
 This shouldn't be needed anymore.
 
@@ -114,4 +130,4 @@ This shouldn't be needed anymore.
 
 - v1.2: Update dependencies
 - v1.1: First public version
-- 
+ 

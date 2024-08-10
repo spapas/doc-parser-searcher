@@ -41,8 +41,6 @@ fun init(directory: String, interval: Int) {
         throw Exception("Lucene99 Not found!")
     }
     val codec = Lucene99Codec()
-    println(codec)
-
     logger.info("Lucene parser init, directory: $directory, interval: $interval minutes")
     Timer("Parser").schedule(
         0, TimeUnit.MINUTES.toMillis(interval.toLong())) {
@@ -57,13 +55,18 @@ fun toDateString(ft: FileTime): String {
 
 fun configureTika(): Tika {
 
-    var config = if (ConfigHolder.config.parser.externalTikaConfig == null) {
+    var cfg = if (ConfigHolder.config.parser.externalTikaConfig == null) {
+        logger.info("Using default tika config")
         TikaConfig(object {}.javaClass.getResourceAsStream("/tika-config.xml"))
+
     } else {
+        logger.info("Using custom tika config")
         TikaConfig(ConfigHolder.config.parser.externalTikaConfig)
+
     }
 
-    val tika = Tika(config)
+    val tika = Tika(cfg)
+
     // Allow tika to read unlimited characters
     tika.maxStringLength = -1
     logger.debug("Will read up to ${tika.maxStringLength} length")
