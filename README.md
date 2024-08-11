@@ -12,7 +12,7 @@ These documents will then be parsed, and you'll be able to search their contents
 
 ## Screenshot
 
-![image](https://github.com/spapas/doc-parser-searcher/assets/3911074/c5a18c9e-3ab5-4a7a-8c93-1ad37cd26353)
+![image](https://github.com/user-attachments/assets/b0572a31-d5c6-42b1-9670-4e7598988c72)
 
 ## Requirements
 
