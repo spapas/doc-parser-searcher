@@ -137,6 +137,10 @@ One sample tika config that uses tesseract can be found [here](https://github.co
 in a lot of situations. Of course, you are free to use it if you need it. Finally, you need to properly set the language of the
 documents you'll OCR or else your results will be very bad (using `<param name="language" type="string">ell</param>`).
 
+## Development
+
+I'm using Intellij Idea for development. You should be able to run it directly from Intellij if you wish. For deployment check the fatjar.bat file or .github/workflows/workflow.yml for how to
+create a "fat" jar (will be built on `build\libs\docparser-all.jar`).
 
 ### Changes to fat.jar
 
