@@ -44,7 +44,8 @@ You should search using the lucene query parser syntax:
 
 https://lucene.apache.org/core/9_11_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
 
-Tips on searching:
+Quick searching tutorial:
+<ul>
 <li><b>Simple:</b> Enter a word and it will search for it using stemming rules for the configured language(i.e if you search for "apple" it will also return documents containing "apples")</li>
 <li><b>Phrase:</b> If you want to search for an exact phrase, f.e "hello, world" you need to enter it between quotes. If you enter two words without the quotes it will search for documents containing one of these words. So searching for hello, world (without quotes) will return documents containing hello and documents containing word (see boolean search for more explanation)</li>
 <li><b>Wildcard:</b> You can do wildcard search: Searching for app* will return documents containing apple, applying or application. Use ? for a single letter, * for any number of characters and + for at least one character. The wildcard character cannot be on the start of your query, i.e *ppl will not work.</li>
@@ -53,6 +54,7 @@ Tips on searching:
 <li><b>Distance:</b> You can search by distance using the ~ operator. For example, "commit local"~3 will search for documents that have the words commit and local on a distance less than 3. That means that a document containing the phrase "commit all changes to local dev" will be returned but a document with the phrase "commit all changes to production and local dev" will not work.</li>
 <li><b>Filtering:</b> You can use the extra search choices to filter based on the name of the folder that contains the document or its created/modified/accessed date. For example if you write appl* to the folder it will only return documents that are contained within a folder named apples or applications (this includes all ancestor folders).</li>
 <li><b>Combinations:</b> You can use all the above in whatever combinations: For example +"commit local"~3 +download -conf* will search documents containing the word commit near the word local and also contain the word download but do not contain any words starting with conf</li>
+</ul>
 
 ## Configuration
 
@@ -114,6 +116,9 @@ a lot of files it will need a lot of time even if nothing has changed).
 The application generates a `lucene_index` directory where the search 
 index is saved and a `map.db` (and map.db.wal.*) file to keep the 
 persistent hashmap (it uses the [mapdb](https://mapdb.org/) library for this).
+
+The parser indexes the text, title, path and created/modified/accessed dates
+for each document.
 
 ## Example
 
